@@ -22,7 +22,7 @@
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             --radius-lg: 1rem;
             --radius-full: 9999px;
-            --max-width: 1400px; /* ขยายจาก 1200 เป็น 1400 เพื่อให้เต็มจอมากขึ้น */
+            --max-width: 1400px;
             --header-height: 80px;
         }
 
@@ -128,7 +128,7 @@
         }
 
         .hero-content {
-            max-width: 900px; /* ขยายความกว้างของเนื้อหาหน้าแรก */
+            max-width: 900px;
             margin: 0 auto;
         }
 
@@ -178,10 +178,10 @@
             border: 1px solid rgba(255,255,255,0.3);
         }
 
-        /* --- Services Grid (Fuller) --- */
+        /* --- Services Grid --- */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* เพิ่ม minwidth เพื่อให้การ์ดใหญ่ขึ้น */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
 
@@ -212,7 +212,7 @@
             color: var(--text-gray);
             font-size: 1rem;
             margin-bottom: 1.5rem;
-            flex-grow: 1; /* ขยายความสูงอัตโนมัติ */
+            flex-grow: 1;
         }
 
         .service-link {
@@ -223,6 +223,91 @@
             display: flex;
             align-items: center;
             gap: 5px;
+        }
+
+        /* --- Articles --- */
+        #articles { background-color: var(--gray-light); }
+        
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .article-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s;
+        }
+        
+        .article-card:hover { transform: translateY(-3px); }
+
+        .article-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #ddd;
+        }
+
+        .article-content { padding: 1.5rem; }
+        .article-tag { 
+            font-size: 0.8rem; 
+            color: var(--primary-color); 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+        }
+        .article-title { 
+            font-size: 1.1rem; 
+            margin: 0.5rem 0 1rem; 
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* --- Patient Rights (New Section) --- */
+        .rights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .right-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid #e5e7eb;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: all 0.3s;
+        }
+
+        .right-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .right-icon {
+            width: 60px; height: 60px;
+            background-color: var(--primary-bg);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .right-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .right-info p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
         }
 
         /* --- Personnel --- */
@@ -265,91 +350,6 @@
             font-weight: 700;
         }
 
-        /* --- New Section: Articles --- */
-        #articles { background-color: var(--gray-light); }
-        
-        .article-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .article-card {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.2s;
-        }
-        
-        .article-card:hover { transform: translateY(-3px); }
-
-        .article-img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            background-color: #ddd;
-        }
-
-        .article-content { padding: 1.5rem; }
-        .article-tag { 
-            font-size: 0.8rem; 
-            color: var(--primary-color); 
-            font-weight: 600; 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-        }
-        .article-title { 
-            font-size: 1.1rem; 
-            margin: 0.5rem 0 1rem; 
-            color: var(--text-dark);
-            font-weight: 600;
-        }
-
-        /* --- Downloads Section --- */
-        .download-list {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            padding: 2rem;
-        }
-
-        .download-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-            transition: background-color 0.2s;
-        }
-
-        .download-item:last-child { border-bottom: none; }
-        .download-item:hover { background-color: #f9fafb; }
-
-        .file-icon {
-            color: #DC2626; /* PDF Red */
-            margin-right: 15px;
-            font-size: 1.5rem;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .file-info { display: inline-block; vertical-align: middle; }
-        .file-name { font-weight: 600; color: var(--text-dark); display: block; }
-        .file-size { font-size: 0.85rem; color: var(--text-gray); }
-
-        .btn-download {
-            padding: 8px 20px;
-            background-color: var(--primary-bg);
-            color: var(--primary-color);
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        
-        .btn-download:hover { background-color: var(--primary-color); color: var(--white); }
-
         /* --- Contact --- */
         #contact { background-color: var(--white); }
         .contact-wrapper {
@@ -372,9 +372,17 @@
         .info-group h3 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 1rem; border-bottom: 2px solid #E5E7EB; padding-bottom: 10px; display: inline-block; }
         .info-item { margin-bottom: 1rem; display: flex; gap: 10px; color: var(--text-gray); }
 
-        .hours-detail { background: var(--white); padding: 1rem; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 0.9rem; }
-        .hours-row { display: flex; justify-content: space-between; margin-bottom: 5px; padding-bottom: 5px; border-bottom: 1px dashed #eee; }
-        .hours-row:last-child { border: none; margin: 0; padding: 0; }
+        .hours-simple {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+        
+        .hours-sub {
+            font-size: 1rem;
+            color: var(--text-gray);
+            margin-top: 5px;
+        }
 
         .map-container { width: 100%; height: 100%; min-height: 450px; }
         .map-container iframe { width: 100%; height: 100%; border: 0; }
@@ -409,7 +417,7 @@
             }
             .nav-links.active { right: 0; display: flex; }
             .hero-content h1 { font-size: 2.5rem; }
-            .services-grid, .personnel-grid, .article-grid { grid-template-columns: 1fr; }
+            .services-grid, .personnel-grid, .article-grid, .rights-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -426,7 +434,7 @@
             <ul class="nav-links" id="nav-links">
                 <li><a href="#home" onclick="closeMenu()">หน้าหลัก</a></li>
                 <li><a href="#services" onclick="closeMenu()">บริการ</a></li>
-                <li><a href="#articles" onclick="closeMenu()">ข่าวสาร</a></li>
+                <li><a href="#rights" onclick="closeMenu()">สิทธิประโยชน์</a></li>
                 <li><a href="#personnel" onclick="closeMenu()">บุคลากร</a></li>
                 <li><a href="#contact" onclick="closeMenu()">ติดต่อเรา</a></li>
             </ul>
@@ -476,7 +484,7 @@
                     <!-- Service 3 -->
                     <div class="service-card">
                         <h3>🤰 ดูแลมารดาและทารก</h3>
-                        <p>คลินิกก่อนคลอด ตรวจสอบสุขภาพแม่และทารกในครรภ์ การให้คำแนะนำการดูแลตัวเอง การให้นมแม่ และติดตามหลังคลอดที่บ้าน (Home Visit)</p>
+                        <p>คลินิกก่อนคลอด ตรวจสอบสุขภาพแม่และทารกในครรภ์ การให้คำแนะนำการดูแลตัวเอง การให้นมแม่ และติดตามหลังคลอดที่บ้าน</p>
                         <a href="#" class="service-link">อ่านเพิ่มเติม →</a>
                     </div>
 
@@ -490,7 +498,7 @@
             </div>
         </section>
 
-        <!-- Articles/News Section (ใหม่) -->
+        <!-- Articles/News Section -->
         <section id="articles">
             <div class="container">
                 <div class="section-header">
@@ -527,43 +535,42 @@
             </div>
         </section>
 
-        <!-- Downloads Section (ใหม่ - เพิ่มความน่าเชื่อถือ) -->
-        <section id="downloads">
+        <!-- Patient Rights (Replaces Downloads) -->
+        <section id="rights">
             <div class="container">
                 <div class="section-header">
-                    <h2>ดาวน์โหลดแบบฟอร์มและเอกสาร</h2>
-                    <p>สามารถดาวน์โหลดแบบฟอร์มยื่นคำขอต่างๆ เพื่อความสะดวกในการรับบริการ</p>
+                    <h2>สิทธิประโยชน์การรักษา</h2>
+                    <p>ข้อมูลสิทธิประกันสุขภาพต่างๆ ที่เราพร้อมให้บริการคุณอย่างเท่าเทียม</p>
                 </div>
-                <div class="download-list">
-                    <div class="download-item">
-                        <div>
-                            <span class="file-icon">📄</span>
-                            <div class="file-info">
-                                <span class="file-name">ใบรับรองแพทย์ (ขอใหม่)</span>
-                                <span class="file-size">ขนาด: 125 KB | PDF</span>
-                            </div>
+
+                <div class="rights-grid">
+                    <div class="right-card">
+                        <div class="right-icon">🛡️</div>
+                        <div class="right-info">
+                            <h4>ประกันสุขภาพถ้วนหน้า 30 บาท</h4>
+                            <p>สิทธิการรักษาโรคทั่วไป พักรักษาตามสิทธิ ไม่จำกัดจำนวนครั้ง รับยาจำเป็นหลัก</p>
                         </div>
-                        <a href="#" class="btn-download">ดาวน์โหลด</a>
                     </div>
-                    <div class="download-item">
-                        <div>
-                            <span class="file-icon">📋</span>
-                            <div class="file-info">
-                                <span class="file-name">ใบลงทะเบียนผู้ป่วยใหม่</span>
-                                <span class="file-size">ขนาด: 80 KB | PDF</span>
-                            </div>
+                    <div class="right-card">
+                        <div class="right-icon">🏥</div>
+                        <div class="right-info">
+                            <h4>สิทธิประกันสังคมมาตรา 40</h4>
+                            <p>สำหรับผู้สูงอายุ คนพิการ และผู้ป่วยโรคเอดส์ รักษาโรคทุกโรคที่รักษาได้ในรพ.สต.</p>
                         </div>
-                        <a href="#" class="btn-download">ดาวน์โหลด</a>
                     </div>
-                    <div class="download-item">
-                        <div>
-                            <span class="file-icon">📝</span>
-                            <div class="file-info">
-                                <span class="file-name">ขอใบอนุญาตรักษาโรคยาวาม</span>
-                                <span class="file-size">ขนาด: 150 KB | PDF</span>
-                            </div>
+                    <div class="right-card">
+                        <div class="right-icon">💳</div>
+                        <div class="right-info">
+                            <h4>บัตรทอง (C3)</h4>
+                            <p>เราเป็นหน่วยบริการในเครือข่ายหลัก รับบัตรทองเพื่อรักษาโรคทั่วไปและฉุกเฉิน</p>
                         </div>
-                        <a href="#" class="btn-download">ดาวน์โหลด</a>
+                    </div>
+                    <div class="right-card">
+                        <div class="right-icon">👶</div>
+                        <div class="right-info">
+                            <h4>สิทธิเด็ก</h4>
+                            <p>เด็กทุกคนมีสิทธิได้รับการรักษาและวัคซีนครบถ้วนตามมาตรฐานของกระทรวงสาธารณสุข</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -624,14 +631,11 @@
                             <div class="info-item"><span>📧</span> contact@klongnoi-hospital.go.th</div>
                         </div>
 
+                        <!-- เวลาทำการแบบลดรูปแบบลง -->
                         <div class="info-group">
                             <h3>🕒 วันและเวลาทำการ</h3>
-                            <div class="hours-detail">
-                                <div class="hours-row"><span>คลินิกทั่วไป:</span> <span>จันทร์ - ศุกร์ (08:30 - 16:30)</span></div>
-                                <div class="hours-row"><span>คลินิกพัฒนาเด็ก:</span> <span>จันทร์ - อังคาร (08:30 - 12:00)</span></div>
-                                <div class="hours-row"><span>ฉีดวัคซีน:</span> <span>พุธ - ศุกร์ (08:30 - 12:00)</span></div>
-                                <div class="hours-row"><span>ให้บริการยา E-Demand:</span> <span>ทุกวัน (08:30 - 16:30)</span></div>
-                            </div>
+                            <div class="hours-simple">จันทร์ - ศุกร์</div>
+                            <div class="hours-sub">08:30 - 16:30 น.</div>
                         </div>
                     </div>
 
