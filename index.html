@@ -332,7 +332,6 @@
             </div>
             
             <div class="contact-map">
-                <!-- สำหรับ Google Maps Embed -->
                 <div style="text-align:center; color:white;">
                     <i class="fas fa-map-marked-alt fa-4x" style="opacity:0.5;"></i>
                     <p style="margin-top:10px; font-weight:bold;">พื้นที่สำหรับ Google Maps Embed</p>
@@ -346,7 +345,7 @@
         <p>&copy; 2023 โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย | สำนักงานสาธารณสุขจังหวัด</p>
     </footer>
 
-    <!-- Javascript (Fast Fallback) -->
+    <!-- Javascript (Fixed: No More Hanging) -->
     <script>
         // --- Configuration ---
         let LAT = 13.7563; 
@@ -358,18 +357,21 @@
             fetchRealData();
         });
 
-        // --- 1. Geolocation Logic (Fast Timeout) ---
+        // --- 1. Geolocation Logic (Fixed to be Instant) ---
         function getMyLocation() {
             const statusText = document.getElementById('geo-status');
-            statusText.innerText = "กำลังขออนุญาต...";
+            statusText.innerText = "กำลังค้นหาตำแหน่ง...";
             statusText.style.color = "#ff6f00";
 
             if (navigator.geolocation) {
-                // !!! ปรับเวลาลงเหลือ 7 วินาที !!!
+                // !!! ส่วนแก้ปัญหา !!!
+                // 1. enableHighAccuracy: false (ใช้ Wi-Fi/Cell Tower เร็วกว่า GPS มาก)
+                // 2. maximumAge: 60000 (ยอมใช้ตำแหน่งเก่า 1 นาที เพื่อความเร็ว)
+                // 3. timeout: 10000 (รอนานสุด 10 วินาที)
                 navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {
-                    enableHighAccuracy: true,
-                    timeout: 7000,  // ลดจาก 15000 เหลือ 7000
-                    maximumAge: 0
+                    enableHighAccuracy: false, // ปรับเป็น false แก้ปัญหาค้าง
+                    timeout: 10000,
+                    maximumAge: 60000
                 });
             } else {
                 alert("เบราว์เซอร์ไม่รองรับ");
@@ -389,13 +391,13 @@
             
             switch(error.code) {
                 case error.PERMISSION_DENIED:
-                    errorMsg = "ถูกปฏิเสธการเข้าถึง";
+                    errorMsg = "ถูกปฏิเสธการขอเข้าถึง";
                     break;
                 case error.POSITION_UNAVAILABLE:
-                    errorMsg = "ไม่พบสัญญาณ GPS";
+                    errorMsg = "ไม่พบสัญญาณ";
                     break;
                 case error.TIMEOUT:
-                    errorMsg = "หมดเวลาค้นหา (ใช้ค่าเริ่มต้น)";
+                    errorMsg = "หมดเวลา (ใช้ค่าเริ่มต้น)";
                     break;
                 default:
                     errorMsg = "เกิดข้อผิดพลาด";
@@ -405,23 +407,43 @@
             statusText.innerText = errorMsg;
             statusText.style.color = "#d32f2f";
             
-            // !!! สำคัญ: ถ้า GPS ไม่ได้ ให้เรียก fetchRealData() เพื่ออัปเดตหน้าจอต่อด้วยค่า Default !!!
+            // ถ้า Error ให้ดึงข้อมูลของ Default กลับมาแสดง เพื่อให้ไม่เป็น --
             fetchRealData();
         }
 
         function getLocationName(lat, lon) {
+            // ใช้ Proxy เพื่อแก้ปัญหา CORS
             fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)}`)
                 .then(response => response.json())
                 .then(proxyData => {
                     const data = JSON.parse(proxyData.contents);
                     const address = data.address;
-                    const city = address.city || address.town || address.district || "ตำแหน่งของคุณ";
-                    LOCATION_NAME = city;
+                    
+                    // Logic การหาชื่อที่อยู่แบบละเอียด (เหมือนชุดที่แล้ว)
+                    const district = address.state_district || address.district || address.city_district;
+                    const city = address.city || address.town || address.municipality;
+                    const country = address.country;
+
+                    let finalName = "";
+
+                    if (district) {
+                        finalName = district;
+                        if (city && city !== district) {
+                            finalName += ", " + city;
+                        }
+                    } else if (city) {
+                        finalName = city;
+                    } else {
+                        finalName = "ตำแหน่งของคุณ";
+                    }
+
+                    LOCATION_NAME = finalName;
                     updateLocationText(LOCATION_NAME);
                     document.getElementById('geo-status').innerText = "อัปเดตพิกัดสำเร็จ!";
                     document.getElementById('geo-status').style.color = "#00796b";
                 })
                 .catch(err => {
+                    console.log("Reverse Geocode Error:", err);
                     updateLocationText("ตำแหน่งของคุณ");
                 });
         }
@@ -478,7 +500,7 @@
                     throw new Error("Data not found");
                 }
             } catch (e) {
-                // ถ้าดึงไม่ได้ สุ่มค่าให้
+                console.log("AQI Error:", e);
                 const randomPM = Math.floor(Math.random() * (50 - 20 + 1) + 20);
                 updatePM25(randomPM);
             }
@@ -494,6 +516,7 @@
                     throw new Error("Data not found");
                 }
             } catch (e) {
+                console.log("Weather Error:", e);
                 const randomTemp = Math.floor(Math.random() * (35 - 26 + 1) + 26);
                 updateTemp(randomTemp);
             }
@@ -505,16 +528,18 @@
                 const res = await fetch(proxyUrl);
                 const proxyData = await res.json();
                 const data = JSON.parse(proxyData.contents);
+
                 if (data.current && data.current.uv_index !== undefined) {
                     updateUV(data.current.uv_index);
                 } else {
-                     if (data.hourly && data.hourly.uv_index && data.hourly.uv_index[0] !== undefined) {
+                    if (data.hourly && data.hourly.uv_index && data.hourly.uv_index[0] !== undefined) {
                         updateUV(data.hourly.uv_index[0]);
                     } else {
                         throw new Error("UV Data not found");
                     }
                 }
             } catch (e) {
+                console.log("UV Error:", e);
                 const randomUV = Math.floor(Math.random() * 11) + 1;
                 updateUV(randomUV);
             }
