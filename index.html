@@ -3,367 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>รพ.สต.คลองน้อย - อ.บ้านแพรก จ.พระนครศรีอยุธยา</title>
+    <title>Smart Dashboard - รพ.สต.คลองน้อย (Live Data)</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&family=Sarabun:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        :root {
-            --moph-green: #00843D; /* สีเขียวกระทรวงสาธารณสุข */
-            --secondary-green: #e8f5e9;
-        }
         body {
+            background-color: #ecf0f1;
             font-family: 'Sarabun', sans-serif;
-            background-color: #f4f6f9;
-        }
-        
-        /* Navbar */
-        .navbar-custom {
-            background-color: var(--moph-green);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .navbar-brand img {
-            height: 40px;
-            filter: brightness(0) invert(1);
+            height: 100vh;
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Hero Banner */
-        .hero-section {
-            background: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') center/cover;
-            height: 400px;
-            position: relative;
-            display: flex;
-            align-items: center;
+        /* Header */
+        .header-bar {
+            background: linear-gradient(to right, #006400, #00843D);
             color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            z-index: 10;
         }
-        .hero-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 50, 20, 0.7);
-        }
+        .app-title h1 { font-family: 'Prompt', sans-serif; font-weight: 700; font-size: 2rem; margin: 0; }
+        .app-title p { margin: 0; opacity: 0.9; font-size: 1rem; }
         
-        /* Dashboard Cards */
-        .info-card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-            background: white;
-            height: 100%;
-        }
-        .info-card:hover {
-            transform: translateY(-5px);
-        }
-        .icon-box {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .clock-widget { text-align: right; }
+        .time-text { font-family: 'Prompt', sans-serif; font-size: 2.5rem; font-weight: 600; line-height: 1; }
+        .date-text { font-size: 1rem; opacity: 0.8; }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            font-size: 1.5rem;
         }
 
-        /* News & Service Section */
-        .section-header {
-            border-left: 5px solid var(--moph-green);
-            padding-left: 15px;
-            margin-bottom: 20px;
-            color: #333;
+        /* Cards */
+        .metric-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            height: 100%;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
-        .service-icon {
-            font-size: 2.5rem;
-            color: var(--moph-green);
-            margin-bottom: 10px;
-        }
+        .metric-card:hover { transform: translateY(-5px); }
         
-        /* Footer */
-        footer {
-            background-color: #2c3e50;
-            color: #bdc3c7;
-            padding-top: 3rem;
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
         }
-        .footer-link { color: #bdc3c7; text-decoration: none; }
-        .footer-link:hover { color: white; }
+
+        .value-display {
+            font-family: 'Prompt', sans-serif;
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin: 10px 0;
+            color: #2c3e50;
+        }
+        .unit-label { font-size: 1.2rem; color: #7f8c8d; font-weight: 500; }
+        
+        .status-badge {
+            margin-top: 1.5rem;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: white;
+            display: inline-block;
+        }
+
+        /* Colors */
+        .color-weather { color: #3498db; }
+        .color-pm { color: #e67e22; }
+        .color-uv { color: #9b59b6; }
+
+        /* Footer Ticker */
+        .ticker-wrap {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 0;
+            font-size: 1.2rem;
+        }
+        .ticker-move {
+            display: inline-block;
+            white-space: nowrap;
+            animation: ticker 30s linear infinite;
+        }
+        @keyframes ticker {
+            0% { transform: translate3d(100vw, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="#">
-                <i class="fas fa-hospital-alt me-2"></i> รพ.สต.คลองน้อย
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">หน้าแรก</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">ข้อมูลองค์กร</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">ตารางแพทย์</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">คลังความรู้</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">ติดต่อเรา</a></li>
-                </ul>
-            </div>
+    <header class="header-bar">
+        <div class="app-title">
+            <h1><i class="fas fa-heartbeat"></i> ศูนย์เฝ้าระวังสุขภาพ</h1>
+            <p>รพ.สต.คลองน้อย ต.คลองน้อย อ.บ้านแพรก</p>
         </div>
-    </nav>
-
-    <header class="hero-section">
-        <div class="hero-overlay"></div>
-        <div class="container position-relative z-index-1">
-            <div class="row">
-                <div class="col-lg-8">
-                    <span class="badge bg-warning text-dark mb-2">Smart Health 2569</span>
-                    <h1 class="display-4 fw-bold">โรงพยาบาลส่งเสริมสุขภาพ<br>ตำบลคลองน้อย</h1>
-                    <p class="lead mb-4">"บริการใกล้บ้าน ดุจญาติมิตร ดูแลชีวิตด้วยหัวใจ"<br>อ.บ้านแพรก จ.พระนครศรีอยุธยา</p>
-                    <button class="btn btn-success btn-lg me-2"><i class="fas fa-calendar-check me-2"></i>จองคิวออนไลน์</button>
-                    <button class="btn btn-outline-light btn-lg"><i class="fas fa-phone me-2"></i>สายด่วน 1669</button>
-                </div>
-            </div>
+        <div class="clock-widget">
+            <div id="clock" class="time-text">--:--</div>
+            <div id="date" class="date-text">กำลังโหลดเวลา...</div>
         </div>
     </header>
 
-    <div class="container mt-n5 position-relative" style="margin-top: -60px; z-index: 2;">
-        <div class="row g-3">
-            <div class="col-md-4">
-                <div class="info-card p-3 d-flex align-items-center">
-                    <div class="icon-box bg-primary text-white">
-                        <i class="fas fa-cloud-sun"></i>
-                    </div>
-                    <div>
-                        <small class="text-muted">สภาพอากาศ อ.บ้านแพรก</small>
-                        <h4 class="mb-0 fw-bold" id="temp-val">-- °C</h4>
-                        <small id="weather-text" class="text-primary">กำลังโหลด...</small>
-                    </div>
-                </div>
-            </div>
+    <div class="container-fluid main-content">
+        <div class="row w-100 g-4" style="height: 65vh;">
             
             <div class="col-md-4">
-                <div class="info-card p-3 d-flex align-items-center">
-                    <div class="icon-box bg-warning text-dark">
-                        <i class="fas fa-lungs"></i>
-                    </div>
-                    <div>
-                        <small class="text-muted">ค่าฝุ่น PM 2.5 (อยุธยา)</small>
-                        <h4 class="mb-0 fw-bold" id="aqi-val">--</h4>
-                        <small id="aqi-text" class="text-secondary">กำลังโหลด...</small>
+                <div class="metric-card border-top border-5 border-primary">
+                    <div class="card-icon color-weather"><i class="fas fa-cloud-sun-rain"></i></div>
+                    <h3 class="text-muted">สภาพอากาศ (ต.คลองน้อย)</h3>
+                    
+                    <div id="weather-val" class="value-display">--</div>
+                    <div class="unit-label">องศาเซลเซียส (°C)</div>
+                    
+                    <div class="mt-3 text-muted fs-5">
+                        <i class="fas fa-tint"></i> ความชื้น: <span id="humidity-val" class="fw-bold">--</span>%
                     </div>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="info-card p-3 d-flex align-items-center">
-                    <div class="icon-box bg-success text-white">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <div>
-                        <small class="text-muted">มุมสุขภาพจิต (Quote)</small>
-                        <div id="quote-text" class="fst-italic" style="font-size: 0.9rem;">"กำลังดึงข้อคิด..."</div>
-                        <small class="text-success fw-bold">- Daily Inspiration</small>
+                <div class="metric-card border-top border-5 border-warning">
+                    <div class="card-icon color-pm"><i class="fas fa-lungs-virus"></i></div>
+                    <h3 class="text-muted">ฝุ่น PM 2.5</h3>
+                    
+                    <div id="pm-val" class="value-display">--</div>
+                    <div class="unit-label">ไมโครกรัม/ลบ.ม. (µg/m³)</div>
+                    
+                    <div id="pm-status" class="status-badge bg-secondary">
+                        กำลังวัดค่า...
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-4">
+                <div class="metric-card border-top border-5 border-danger">
+                    <div class="card-icon color-uv"><i class="fas fa-sun"></i></div>
+                    <h3 class="text-muted">ดัชนียูวี (UV Index)</h3>
+                    
+                    <div id="uv-val" class="value-display">--</div>
+                    <div class="unit-label">ความแรงรังสี UV</div>
+                    
+                    <div id="uv-advice" class="mt-3 fs-5 text-muted">
+                        กำลังประมวลผล...
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <div class="container py-5">
-        <div class="row">
-            
-            <div class="col-lg-8">
-                
-                <div class="mb-5">
-                    <h3 class="section-header">บริการของเรา</h3>
-                    <div class="row text-center g-4">
-                        <div class="col-md-3 col-6">
-                            <div class="card h-100 p-3 border-0 shadow-sm">
-                                <i class="fas fa-stethoscope service-icon"></i>
-                                <h6>ตรวจโรคทั่วไป</h6>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-6">
-                            <div class="card h-100 p-3 border-0 shadow-sm">
-                                <i class="fas fa-baby service-icon"></i>
-                                <h6>คลินิกเด็กดี</h6>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-6">
-                            <div class="card h-100 p-3 border-0 shadow-sm">
-                                <i class="fas fa-pills service-icon"></i>
-                                <h6>โรคเรื้อรัง (NCDs)</h6>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-6">
-                            <div class="card h-100 p-3 border-0 shadow-sm">
-                                <i class="fas fa-home service-icon"></i>
-                                <h6>เยี่ยมบ้าน</h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <h3 class="section-header">ข่าวประชาสัมพันธ์ (ปีงบประมาณ 2569)</h3>
-                <div class="card mb-3 border-0 shadow-sm">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="img-fluid rounded-start h-100 object-fit-cover" alt="Vaccine">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold">รณรงค์ฉีดวัคซีนไข้หวัดใหญ่ ประจำปี 2569</h5>
-                                <p class="card-text text-muted">ขอเชิญชวนผู้สูงอายุ 60 ปีขึ้นไป และกลุ่มเสี่ยง 7 โรคเรื้อรัง เข้ารับบริการฉีดวัคซีนฟรี ณ รพ.สต.คลองน้อย...</p>
-                                <p class="card-text"><small class="text-body-secondary">โพสต์เมื่อ: 3 มกราคม 2569</small></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card mb-3 border-0 shadow-sm">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="img-fluid rounded-start h-100 object-fit-cover" alt="Dengue">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold">กิจกรรม "บ้านสะอาด ปราศจากลูกน้ำยุงลาย"</h5>
-                                <p class="card-text text-muted">อสม.ตำบลคลองน้อย ร่วมกับผู้นำชุมชน ลงพื้นที่สำรวจลูกน้ำยุงลาย เพื่อป้องกันไข้เลือดออก...</p>
-                                <p class="card-text"><small class="text-body-secondary">โพสต์เมื่อ: 20 กุมภาพันธ์ 2569</small></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-lg-4">
-                
-                <div class="card border-0 shadow-sm mb-4 text-center p-3">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mx-auto mb-3" width="100" alt="Director">
-                    <h5>นางสมศรี ใจดี</h5>
-                    <p class="text-muted small">ผู้อำนวยการ รพ.สต.คลองน้อย</p>
-                    <hr>
-                    <p class="small text-start"><i class="fas fa-quote-left text-muted me-2"></i>เรามุ่งมั่นให้บริการดุจญาติมิตร เพื่อสุขภาพที่ดีของชาวบ้านแพรกทุกท่านครับ</p>
-                </div>
-
-                <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-header bg-success text-white">
-                        <i class="far fa-clock me-2"></i> เวลาทำการ
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>จันทร์ - ศุกร์</span>
-                            <strong>08.30 - 16.30 น.</strong>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>คลินิกนอกเวลา</span>
-                            <strong>16.30 - 20.00 น.</strong>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>เสาร์ - อาทิตย์</span>
-                            <span class="text-danger">หยุดทำการ</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body p-0">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3864.757011681374!2d100.57948331483815!3d14.63463398978255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e2010834169733%3A0x62804b4c7188706!2z4Lia4LmJ4Liy4LiZ4LmB4Lie4Lij4LiB!5e0!3m2!1sth!2sth!4v1689658745213!5m2!1sth!2sth" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                    </div>
-                </div>
-
-            </div>
+    <div class="ticker-wrap">
+        <div class="ticker-move">
+            📢 <strong>ประกาศ 2569:</strong> รณรงค์ฉีดวัคซีนป้องกันไข้หวัดใหญ่ฟรี สำหรับกลุ่มเสี่ยง 608 ที่ รพ.สต.คลองน้อย | <strong>แจ้งเตือน:</strong> หากค่าฝุ่น PM 2.5 เป็นสีส้ม/แดง ควรงดกิจกรรมกลางแจ้งและสวมหน้ากาก N95 | ดูแลสุขภาพ ดื่มน้ำสะอาด และพักผ่อนให้เพียงพอ ด้วยความปรารถนาดีจาก รพ.สต.คลองน้อย
         </div>
     </div>
-
-    <footer>
-        <div class="container pb-4">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <h5 class="mb-3 text-white">ติดต่อเรา</h5>
-                    <p><i class="fas fa-map-marker-alt me-2"></i> หมู่ 3 ต.คลองน้อย อ.บ้านแพรก<br>จ.พระนครศรีอยุธยา 13240</p>
-                    <p><i class="fas fa-phone me-2"></i> 035-XXX-XXX</p>
-                    <p><i class="fab fa-facebook me-2"></i> รพ.สต.คลองน้อย</p>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <h5 class="mb-3 text-white">ลิงก์ที่เกี่ยวข้อง</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="footer-link">กระทรวงสาธารณสุข</a></li>
-                        <li><a href="#" class="footer-link">สปสช. (บัตรทอง)</a></li>
-                        <li><a href="#" class="footer-link">กรมควบคุมโรค</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <h5 class="mb-3 text-white">แจ้งเหตุด่วน</h5>
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-danger btn-lg"><i class="fas fa-ambulance me-2"></i> 1669 ฉุกเฉิน</button>
-                    </div>
-                </div>
-            </div>
-            <hr class="border-secondary">
-            <div class="text-center small">
-                &copy; 2569 โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย. All Rights Reserved.
-            </div>
-        </div>
-    </footer>
 
     <script>
-        // --- API 1: Open-Meteo (สภาพอากาศ) ---
-        async function fetchWeather() {
-            try {
-                // พิกัด อ.บ้านแพรก
-                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=14.64&longitude=100.58&current_weather=true');
-                const data = await res.json();
-                document.getElementById('temp-val').innerText = `${data.current_weather.temperature} °C`;
-                document.getElementById('weather-text').innerText = `ลม: ${data.current_weather.windspeed} km/h`;
-            } catch (e) { console.log("Weather Error"); }
-        }
+        // *** อัปเดตพิกัดตามที่ผู้ใช้งานแจ้ง ***
+        const LAT = 14.652604878825167;
+        const LON = 100.55086772750929;
 
-        // --- API 2: WAQI (ฝุ่น PM 2.5) ---
-        async function fetchAQI() {
+        // 1. Clock Function
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+            const dateStr = now.toLocaleDateString('th-TH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('clock').innerText = timeStr;
+            document.getElementById('date').innerText = dateStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 2. Fetch Weather & UV
+        async function fetchWeatherAndUV() {
             try {
-                const res = await fetch('https://api.waqi.info/feed/ayutthaya/?token=demo');
+                // ดึงข้อมูลตามพิกัด LAT/LON ที่ระบุ
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m&hourly=uv_index&timezone=Asia%2FBangkok`;
+                const res = await fetch(url);
                 const data = await res.json();
-                if(data.status === 'ok') {
-                    const aqi = data.data.aqi;
-                    const valEl = document.getElementById('aqi-val');
-                    valEl.innerText = aqi;
-                    
-                    let status = "คุณภาพดี";
-                    let color = "text-success";
-                    
-                    if(aqi > 50) { status = "ปานกลาง"; color = "text-warning"; }
-                    if(aqi > 100) { status = "เริ่มมีผลกระทบ"; color = "text-danger"; }
-                    
-                    document.getElementById('aqi-text').innerText = status;
-                    document.getElementById('aqi-text').className = color;
+
+                // Temp & Humidity
+                const temp = data.current.temperature_2m;
+                const humidity = data.current.relative_humidity_2m;
+                document.getElementById('weather-val').innerText = temp;
+                document.getElementById('humidity-val').innerText = humidity;
+
+                // UV Index (Current Hour)
+                const currentHour = new Date().getHours();
+                const uvIndex = data.hourly.uv_index[currentHour];
+                
+                const uvValEl = document.getElementById('uv-val');
+                const uvAdviceEl = document.getElementById('uv-advice');
+                
+                uvValEl.innerText = uvIndex;
+
+                if (uvIndex <= 2) {
+                    uvValEl.style.color = "#2ecc71"; 
+                    uvAdviceEl.innerHTML = '<span class="text-success"><i class="fas fa-smile"></i> ปลอดภัย</span>';
+                } else if (uvIndex <= 5) {
+                    uvValEl.style.color = "#f1c40f"; 
+                    uvAdviceEl.innerHTML = '<span class="text-warning"><i class="fas fa-hat-cowboy"></i> ปานกลาง</span> สวมหมวก/แว่น';
+                } else if (uvIndex <= 7) {
+                    uvValEl.style.color = "#e67e22"; 
+                    uvAdviceEl.innerHTML = '<span class="text-danger"><i class="fas fa-umbrella"></i> สูง</span> ทาครีมกันแดด';
+                } else {
+                    uvValEl.style.color = "#e74c3c"; 
+                    uvAdviceEl.innerHTML = '<span class="text-danger fw-bold"><i class="fas fa-exclamation-triangle"></i> อันตราย</span> งดออกแดด';
                 }
-            } catch (e) { console.log("AQI Error"); }
-        }
 
-        // --- API 3: ZenQuotes (คำคมสุขภาพจิต) ---
-        // ใช้ Proxy เพื่อเลี่ยง CORS ในการ demo (หรือใช้ type.fit API แทนหาก zenquotes ติด limit)
-        async function fetchQuote() {
-            try {
-                const res = await fetch('https://type.fit/api/quotes');
-                const data = await res.json();
-                // สุ่มมา 1 อัน
-                const randomQuote = data[Math.floor(Math.random() * data.length)];
-                document.getElementById('quote-text').innerText = `"${randomQuote.text}"`;
-            } catch (e) { 
-                document.getElementById('quote-text').innerText = '"สุขภาพกายที่ดี เริ่มต้นที่สุขภาพใจ"';
+            } catch (error) {
+                console.error("Weather/UV Error:", error);
+                document.getElementById('weather-val').innerText = "-";
             }
         }
 
-        // Run All
-        window.onload = () => {
-            fetchWeather();
-            fetchAQI();
-            fetchQuote();
+        // 3. Fetch PM 2.5
+        async function fetchPM25() {
+            try {
+                const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${LAT}&longitude=${LON}&current=pm2_5&timezone=Asia%2FBangkok`;
+                const res = await fetch(url);
+                const data = await res.json();
+
+                const pm25 = data.current.pm2_5;
+                const pmValEl = document.getElementById('pm-val');
+                const pmStatusEl = document.getElementById('pm-status');
+
+                pmValEl.innerText = pm25;
+
+                // Color Logic
+                if (pm25 <= 15) { 
+                    pmStatusEl.style.backgroundColor = "#3498db"; 
+                    pmStatusEl.innerText = "ดีมาก";
+                } else if (pm25 <= 25) { 
+                    pmStatusEl.style.backgroundColor = "#2ecc71";
+                    pmStatusEl.innerText = "ดี";
+                } else if (pm25 <= 37.5) { 
+                    pmStatusEl.style.backgroundColor = "#f1c40f";
+                    pmStatusEl.style.color = "#333";
+                    pmStatusEl.innerText = "ปานกลาง";
+                } else if (pm25 <= 75) { 
+                    pmStatusEl.style.backgroundColor = "#e67e22";
+                    pmStatusEl.innerText = "เริ่มมีผล";
+                } else { 
+                    pmStatusEl.style.backgroundColor = "#e74c3c";
+                    pmStatusEl.innerText = "อันตราย";
+                }
+
+            } catch (error) {
+                console.error("PM2.5 Error:", error);
+                document.getElementById('pm-val').innerText = "-";
+            }
+        }
+
+        window.onload = function() {
+            fetchWeatherAndUV();
+            fetchPM25();
+            setInterval(() => { fetchWeatherAndUV(); fetchPM25(); }, 900000); // 15 mins refresh
         };
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
