@@ -28,7 +28,6 @@
             background-color: var(--light-bg);
             color: var(--text-dark);
             line-height: 1.6;
-            padding-bottom: 60px; /* Space for ticker */
         }
 
         .container {
@@ -191,22 +190,8 @@
         }
         .map-placeholder iframe { width: 100%; height: 100%; border:0; }
 
-        /* --- Footer Ticker --- */
-        .ticker-wrap {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background-color: #2c3e50; color: white;
-            padding: 10px 0; font-size: 1rem; z-index: 2000;
-        }
-        .ticker-move {
-            display: inline-block; white-space: nowrap;
-            animation: ticker 30s linear infinite;
-        }
-        @keyframes ticker {
-            0% { transform: translate3d(100vw, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
-        }
-
-        footer { background-color: #333; color: #aaa; padding: 40px 0 80px 0; text-align: center; font-size: 0.9rem; }
+        /* Footer */
+        footer { background-color: #333; color: #aaa; padding: 40px 0; text-align: center; font-size: 0.9rem; }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -381,16 +366,10 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย. All rights reserved.</p>
+            <p>© 2024 โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย. All rights reserved.</p>
             <p style="font-size: 0.8rem; margin-top: 5px;">ข้อมูลสภาพอากาศและฝุ่นละอองสนับสนุนโดย Open-Meteo API</p>
         </div>
     </footer>
-
-    <div class="ticker-wrap">
-        <div class="ticker-move">
-            📢 <strong>ประชาสัมพันธ์:</strong> ขอเชิญชวนประชาชนกลุ่มเสี่ยง 608 รับบริการฉีดวัคซีนไข้หวัดใหญ่ฟรีที่ รพ.สต. | <strong>แจ้งเตือนสุขภาพ:</strong> ช่วงนี้อากาศเปลี่ยนแปลงบ่อย โปรดดูแลสุขภาพ หากมีไข้สูงติดต่อกัน 2 วันควรพบแพทย์ | <strong>สายด่วนฉุกเฉิน:</strong> โทร 1669 ตลอด 24 ชั่วโมง
-        </div>
-    </div>
 
     <script>
         // พิกัดจริงของ รพ.สต.คลองน้อย
