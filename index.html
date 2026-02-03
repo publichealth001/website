@@ -345,7 +345,7 @@
         <p>&copy; 2023 โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย | สำนักงานสาธารณสุขจังหวัด</p>
     </footer>
 
-    <!-- Javascript (Fixed: No More Hanging) -->
+    <!-- Javascript (Full Hierarchy Logic) -->
     <script>
         // --- Configuration ---
         let LAT = 13.7563; 
@@ -357,19 +357,16 @@
             fetchRealData();
         });
 
-        // --- 1. Geolocation Logic (Fixed to be Instant) ---
+        // --- 1. Geolocation Logic ---
         function getMyLocation() {
             const statusText = document.getElementById('geo-status');
             statusText.innerText = "กำลังค้นหาตำแหน่ง...";
             statusText.style.color = "#ff6f00";
 
             if (navigator.geolocation) {
-                // !!! ส่วนแก้ปัญหา !!!
-                // 1. enableHighAccuracy: false (ใช้ Wi-Fi/Cell Tower เร็วกว่า GPS มาก)
-                // 2. maximumAge: 60000 (ยอมใช้ตำแหน่งเก่า 1 นาที เพื่อความเร็ว)
-                // 3. timeout: 10000 (รอนานสุด 10 วินาที)
+                // ใช้ค่าตั้งที่เร็วและไม่ต้องการความแม่นยำเกินไป เพื่อความรวดเร็ว
                 navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {
-                    enableHighAccuracy: false, // ปรับเป็น false แก้ปัญหาค้าง
+                    enableHighAccuracy: false, 
                     timeout: 10000,
                     maximumAge: 60000
                 });
@@ -406,34 +403,45 @@
             
             statusText.innerText = errorMsg;
             statusText.style.color = "#d32f2f";
-            
-            // ถ้า Error ให้ดึงข้อมูลของ Default กลับมาแสดง เพื่อให้ไม่เป็น --
             fetchRealData();
         }
 
+        // --- 2. Logic แปลงพิกัดเป็นชื่อที่อยู่แบบเต็มรูปแบบ (จังหวัด/อำเภอ/ตำบล) ---
         function getLocationName(lat, lon) {
-            // ใช้ Proxy เพื่อแก้ปัญหา CORS
             fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)}`)
                 .then(response => response.json())
                 .then(proxyData => {
                     const data = JSON.parse(proxyData.contents);
                     const address = data.address;
                     
-                    // Logic การหาชื่อที่อยู่แบบละเอียด (เหมือนชุดที่แล้ว)
-                    const district = address.state_district || address.district || address.city_district;
-                    const city = address.city || address.town || address.municipality;
-                    const country = address.country;
+                    // 1. ดึงชื่อตำบล (Tambon) - OSM ใช้ key "town" หรือ "suburb"
+                    let tambon = address.town || address.suburb || address.village;
+                    
+                    // 2. ดึงชื่ออำเภอ (Amphoe) - OSM ใช้ key "city_district"
+                    let amphoe = address.city_district || address.district;
+                    
+                    // 3. ดึงชื่อจังหวัด (Changwat) - OSM ใช้ key "state"
+                    let changwat = address.state || address.province;
 
                     let finalName = "";
 
-                    if (district) {
-                        finalName = district;
-                        if (city && city !== district) {
-                            finalName += ", " + city;
-                        }
-                    } else if (city) {
-                        finalName = city;
-                    } else {
+                    // ต่อข้อความ
+                    if (tambon) {
+                        // ลบคำนำหน้า "Ban" หรือ "บ้าน" ออกเพื่อความสะอาด (เช่น Ban Klong Noi -> Klong Noi)
+                        let cleanTambon = tambon.replace(/^Ban |^บ้าน /, "");
+                        finalName = cleanTambon;
+                    }
+
+                    if (amphoe) {
+                        finalName += " อำเภอ " + amphoe;
+                    }
+
+                    if (changwat) {
+                        finalName += " จังหวัด " + changwat;
+                    }
+
+                    // ถ้าไม่เจอข้อมูลให้ใช้ค่าเริ่มต้น
+                    if (finalName.length < 3) {
                         finalName = "ตำแหน่งของคุณ";
                     }
 
@@ -441,6 +449,7 @@
                     updateLocationText(LOCATION_NAME);
                     document.getElementById('geo-status').innerText = "อัปเดตพิกัดสำเร็จ!";
                     document.getElementById('geo-status').style.color = "#00796b";
+
                 })
                 .catch(err => {
                     console.log("Reverse Geocode Error:", err);
@@ -448,7 +457,6 @@
                 });
         }
 
-        // --- UI Updates ---
         function updateLocationText(name) {
             document.getElementById('loc-pm25').innerText = name;
             document.getElementById('loc-weather').innerText = name;
@@ -532,7 +540,7 @@
                 if (data.current && data.current.uv_index !== undefined) {
                     updateUV(data.current.uv_index);
                 } else {
-                    if (data.hourly && data.hourly.uv_index && data.hourly.uv_index[0] !== undefined) {
+                     if (data.hourly && data.hourly.uv_index && data.hourly.uv_index[0] !== undefined) {
                         updateUV(data.hourly.uv_index[0]);
                     } else {
                         throw new Error("UV Data not found");
