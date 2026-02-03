@@ -75,8 +75,8 @@
             color: var(--primary-color);
         }
         .logo i { font-size: 2rem; }
-        nav ul { display: flex; list-style: none; gap: 25px; }
-        nav a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: color 0.3s; }
+        nav ul { display: flex; list-style: none; gap: 20px; }
+        nav a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: color 0.3s; font-size: 0.95rem; }
         nav a:hover { color: var(--primary-color); }
 
         /* --- Hero Section --- */
@@ -85,14 +85,13 @@
             background-size: cover;
             background-position: center;
             color: var(--white);
-            padding: 80px 0 100px 0; /* Extra padding bottom for dashboard overlap */
+            padding: 80px 0 120px 0; /* เพิ่ม Padding ด้านล่างเผื่อให้ Dashboard ดึงขึ้น */
             text-align: center;
             position: relative;
         }
         .hero h1 { font-size: 2.2rem; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
         .hero p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 25px; }
         
-        /* Live Clock in Hero */
         .live-clock {
             background: rgba(255,255,255,0.2);
             backdrop-filter: blur(5px);
@@ -110,16 +109,31 @@
         }
         .hero-buttons .btn-outline:hover { background: white; color: var(--primary-color); }
 
-        /* --- Dashboard Section (The Real Data) --- */
+        /* --- Dashboard Section --- */
         .dashboard {
-            margin-top: -60px; /* Pull up to overlap hero */
+            margin-top: -80px; /* ดึงขึ้นมาทับ Hero */
             padding-bottom: 40px;
             position: relative;
             z-index: 10;
         }
+        
+        /* สไตล์สำหรับหัวข้อ สุขภาพชุมชน */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .dashboard-header h2 {
+            color: white;
+            font-size: 1.8rem;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            display: inline-block;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 5px;
+        }
+
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive Grid */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
         }
         .data-card {
@@ -131,11 +145,10 @@
             align-items: center;
             justify-content: space-between;
             transition: transform 0.3s;
-            border-top: 5px solid #ddd; /* Default border */
+            border-top: 5px solid #ddd;
         }
         .data-card:hover { transform: translateY(-5px); }
 
-        /* Specific Card Borders */
         .card-weather { border-color: #4facfe; }
         .card-pm { border-color: #f093fb; }
         .card-uv { border-color: #ff9a9e; }
@@ -158,7 +171,7 @@
             border-radius: 20px; font-size: 0.85rem; font-weight: 600;
         }
 
-        /* --- Services & Content --- */
+        /* --- Sections General --- */
         section { padding: 60px 0; }
         .section-title { text-align: center; margin-bottom: 40px; }
         .section-title h2 { font-size: 2rem; color: var(--primary-color); position: relative; display: inline-block; }
@@ -166,6 +179,7 @@
             content: ''; display: block; width: 50px; height: 3px; background: var(--accent-color); margin: 10px auto 0;
         }
 
+        /* --- Services --- */
         .services-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;
         }
@@ -176,6 +190,44 @@
         }
         .service-card:hover { border-color: var(--primary-color); box-shadow: var(--shadow); }
         .service-icon { font-size: 3rem; color: var(--secondary-color); margin-bottom: 20px; }
+
+        /* --- NEW: Staff Section --- */
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            justify-content: center;
+        }
+        .staff-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            text-align: center;
+            padding-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        .staff-card:hover { transform: translateY(-5px); }
+        .staff-img-wrapper {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            background-color: #eee;
+            margin-bottom: 15px;
+        }
+        .staff-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* หรือ object-fit: contain ถ้าเป็นรูปถ่ายบุคคลครึ่งตัว */
+        }
+        /* กรณีไม่มีรูป ใช้ไอคอนแทน */
+        .staff-placeholder {
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            background-color: #e0e0e0; color: #999; font-size: 5rem;
+        }
+        .staff-card h3 { color: var(--primary-color); font-size: 1.2rem; margin-bottom: 5px; }
+        .staff-card p { color: var(--text-light); font-size: 0.95rem; }
 
         /* --- Contact --- */
         .contact-wrapper {
@@ -196,7 +248,7 @@
         /* Responsive */
         @media (max-width: 768px) {
             .nav-wrapper { flex-direction: column; gap: 15px; }
-            nav ul { gap: 15px; flex-wrap: wrap; justify-content: center; }
+            nav ul { gap: 10px; flex-wrap: wrap; justify-content: center; }
             .hero h1 { font-size: 1.8rem; }
             .contact-wrapper { grid-template-columns: 1fr; }
             .map-placeholder { min-height: 250px; }
@@ -223,7 +275,7 @@
                     <li><a href="#hero">หน้าแรก</a></li>
                     <li><a href="#dashboard">สุขภาพชุมชน</a></li>
                     <li><a href="#services">บริการ</a></li>
-                    <li><a href="#contact">ติดต่อเรา</a></li>
+                    <li><a href="#staff">บุคลากร</a></li> <li><a href="#contact">ติดต่อเรา</a></li>
                 </ul>
             </nav>
         </div>
@@ -246,6 +298,10 @@
 
         <section id="dashboard" class="dashboard">
             <div class="container">
+                <div class="dashboard-header">
+                    <h2>สุขภาพชุมชน</h2>
+                </div>
+
                 <div class="dashboard-grid">
                     
                     <div class="data-card card-weather">
@@ -304,28 +360,65 @@
                     <div class="service-card">
                         <div class="service-icon"><i class="fas fa-stethoscope"></i></div>
                         <h3>ตรวจรักษาโรคทั่วไป</h3>
-                        <p>บริการตรวจรักษาโรคเบื้องต้น จ่ายยา ทำแผล และดูแลผู้ป่วยโรคเรื้อรัง (เบาหวาน/ความดัน)</p>
+                        <p>บริการตรวจรักษาโรคเบื้องต้น จ่ายยา ทำแผล และดูแลผู้ป่วยโรคเรื้อรัง</p>
                     </div>
                     <div class="service-card">
                         <div class="service-icon"><i class="fas fa-tooth"></i></div>
                         <h3>ทันตกรรมพื้นฐาน</h3>
-                        <p>ตรวจสุขภาพช่องปาก ถอนฟัน ขูดหินปูน และเคลือบหลุมร่องฟัน (นัดหมายล่วงหน้า)</p>
+                        <p>ตรวจสุขภาพช่องปาก ถอนฟัน ขูดหินปูน และเคลือบหลุมร่องฟัน</p>
                     </div>
                     <div class="service-card">
                         <div class="service-icon"><i class="fas fa-user-nurse"></i></div>
                         <h3>เยี่ยมบ้าน & ผู้สูงอายุ</h3>
-                        <p>ติดตามเยี่ยมบ้านผู้ป่วยติดเตียง ผู้พิการ และส่งเสริมสุขภาพผู้สูงอายุในชุมชน</p>
+                        <p>ติดตามเยี่ยมบ้านผู้ป่วยติดเตียง ผู้พิการ และส่งเสริมสุขภาพชุมชน</p>
                     </div>
                     <div class="service-card">
                         <div class="service-icon"><i class="fas fa-baby"></i></div>
                         <h3>แม่และเด็ก</h3>
-                        <p>คลินิกฝากครรภ์ ตรวจพัฒนาการเด็ก และให้บริการฉีดวัคซีนตามเกณฑ์</p>
+                        <p>คลินิกฝากครรภ์ ตรวจพัฒนาการเด็ก และให้บริการฉีดวัคซีน</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="contact" style="background-color: #fff;">
+        <section id="staff" style="background-color: var(--white);">
+            <div class="container">
+                <div class="section-title">
+                    <h2>บุคลากรของเรา</h2>
+                    <p>ทีมงานคุณภาพพร้อมให้บริการประชาชน</p>
+                </div>
+                
+                <div class="staff-grid">
+                    
+                    <div class="staff-card">
+                        <div class="staff-img-wrapper">
+                            <div class="staff-placeholder"><i class="fas fa-user-tie"></i></div>
+                            </div>
+                        <h3>นายแพทย์/พยาบาล (ชื่อ-สกุล)</h3>
+                        <p>ผู้อำนวยการ รพ.สต.</p>
+                    </div>
+
+                    <div class="staff-card">
+                        <div class="staff-img-wrapper">
+                            <div class="staff-placeholder"><i class="fas fa-user-nurse"></i></div>
+                        </div>
+                        <h3>พยาบาลวิชาชีพ (ชื่อ-สกุล)</h3>
+                        <p>พยาบาลวิชาชีพปฏิบัติการ</p>
+                    </div>
+
+                    <div class="staff-card">
+                        <div class="staff-img-wrapper">
+                            <div class="staff-placeholder"><i class="fas fa-user"></i></div>
+                        </div>
+                        <h3>เจ้าหน้าที่สาธารณสุข (ชื่อ-สกุล)</h3>
+                        <p>นักวิชาการสาธารณสุข</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
             <div class="container">
                 <div class="section-title"><h2>ติดต่อเรา</h2></div>
                 <div class="contact-wrapper">
