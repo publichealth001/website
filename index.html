@@ -115,6 +115,27 @@
         .dashboard-header h3 { color: var(--primary-dark); font-size: 1.1rem; margin: 0; line-height: 1.2;}
         .dashboard-header i { color: var(--accent-color); font-size: 1.3rem; }
 
+        /* Status Badge Styles */
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .status-live {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+        .status-fallback {
+            background-color: #fff3e0;
+            color: #ef6c00;
+            border: 1px solid #ffe0b2;
+        }
+
         .api-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: auto; }
         .api-table th, .api-table td { padding: 8px 5px; text-align: left; border-bottom: 1px solid #eee; }
         .api-table th { background-color: #f9f9f9; color: var(--primary-dark); font-weight: 600; white-space: nowrap; }
@@ -257,7 +278,7 @@
         </div>
     </section>
 
-    <!-- Dashboard Section (Updated to Year 2568) -->
+    <!-- Dashboard Section -->
     <section id="dashboard" class="dashboard-section">
         <div class="container">
             <div class="section-title">
@@ -270,7 +291,10 @@
                 <div class="dashboard-card">
                     <div class="dashboard-header">
                         <h3>ไข้หวัดใหญ่</h3>
-                        <i class="fa-solid fa-head-side-virus" style="color: #1E88E5;"></i>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <div id="flu-status"></div> <!-- Status Badge Here -->
+                            <i class="fa-solid fa-head-side-virus" style="color: #1E88E5;"></i>
+                        </div>
                     </div>
                     <div id="flu-loading" class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> กำลังโหลด...</div>
                     <table class="api-table" id="flu-table" style="display:none;">
@@ -283,7 +307,10 @@
                 <div class="dashboard-card">
                     <div class="dashboard-header">
                         <h3>โรคปอดบวม</h3>
-                        <i class="fa-solid fa-lungs" style="color: #E53935;"></i>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <div id="pneu-status"></div> <!-- Status Badge Here -->
+                            <i class="fa-solid fa-lungs" style="color: #E53935;"></i>
+                        </div>
                     </div>
                     <div id="pneu-loading" class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> กำลังโหลด...</div>
                     <table class="api-table" id="pneu-table" style="display:none;">
@@ -296,7 +323,10 @@
                 <div class="dashboard-card">
                     <div class="dashboard-header">
                         <h3>มือ เท้า ปาก</h3>
-                        <i class="fa-solid fa-child-reaching" style="color: #FB8C00;"></i>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <div id="hfmd-status"></div> <!-- Status Badge Here -->
+                            <i class="fa-solid fa-child-reaching" style="color: #FB8C00;"></i>
+                        </div>
                     </div>
                     <div id="hfmd-loading" class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> กำลังโหลด...</div>
                     <table class="api-table" id="hfmd-table" style="display:none;">
@@ -370,7 +400,7 @@
     <!-- Footer -->
     <footer><div class="container"><div class="copyright"><p>&copy; 2025 โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย. สงวนลิขสิทธิ์.</p></div></div></footer>
 
-    <!-- Script (Updated to Year 2568) -->
+    <!-- Script (With Visual Status Indicators) -->
     <script>
         // --- 1. Fix Scroll Jump on Refresh ---
         if ('scrollRestoration' in history) {
@@ -405,17 +435,18 @@
         mobileMenuBtn.addEventListener('click', toggleMenu);
         overlay.addEventListener('click', closeMenu);
 
-        // --- API Fetching Logic (Year 2568) ---
+        // --- API Fetching Logic (Year 2568 with Status) ---
         document.addEventListener('DOMContentLoaded', function() {
             fetchFlu();
             fetchPneumonia();
             fetchHFMD();
         });
 
-        async function fetchData(apiName, url, tbodyId, loaderId, fallbackData, col1, col2, col3) {
+        async function fetchData(apiName, url, tbodyId, loaderId, statusId, fallbackData, col1, col2, col3) {
             const loader = document.getElementById(loaderId);
             const table = tbodyId.replace('body', 'table'); 
             const tbody = document.getElementById(tbodyId);
+            const statusDiv = document.getElementById(statusId);
             
             const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
 
@@ -427,6 +458,9 @@
                 loader.style.display = 'none';
 
                 if (Array.isArray(realData) && realData.length > 0) {
+                    // 1. Show Success Badge
+                    statusDiv.innerHTML = `<span class="status-badge status-live"><i class="fa-solid fa-check-circle"></i> ข้อมูลจริง</span>`;
+
                     const sortedData = realData.sort((a, b) => (b.patient || b.total || 0) - (a.patient || a.total || 0)).slice(0, 5);
                     
                     let html = '';
@@ -444,12 +478,16 @@
                     tbody.innerHTML = html;
                     document.getElementById(table).style.display = 'table';
                 } else {
-                    throw new Error("Data empty");
+                    throw new Error("Data empty or invalid format");
                 }
 
             } catch (error) {
                 console.warn(`Using Fallback for ${apiName} (2568):`, error);
                 loader.style.display = 'none';
+
+                // 2. Show Fallback Badge
+                statusDiv.innerHTML = `<span class="status-badge status-fallback"><i class="fa-solid fa-triangle-exclamation"></i> ข้อมูลสำรอง</span>`;
+
                 let html = '';
                 fallbackData.forEach(item => {
                     html += `<tr>
@@ -473,7 +511,7 @@
                 { province: "สมุทรปราการ", patient: 240, severe: 5 },
                 { province: "ชลบุรี", patient: 200, severe: 4 }
             ];
-            fetchData('Flu', url, 'flu-body', 'flu-loading', fallback, 'province', 'patient', 'severe');
+            fetchData('Flu', url, 'flu-body', 'flu-loading', 'flu-status', fallback, 'province', 'patient', 'severe');
         }
 
         // 2. Pneumonia 2568
@@ -486,7 +524,7 @@
                 { province: "แพร่", patient: 65, death: 2 },
                 { province: "พะเยา", patient: 55, death: 2 }
             ];
-            fetchData('Pneumonia', url, 'pneu-body', 'pneu-loading', fallback, 'province', 'patient', 'death');
+            fetchData('Pneumonia', url, 'pneu-body', 'pneu-loading', 'pneu-status', fallback, 'province', 'patient', 'death');
         }
 
         // 3. HFMD 2568
@@ -499,7 +537,7 @@
                 { province: "นนทบุรี", patient: 820, severe: 8 },
                 { province: "เชียงใหม่", patient: 700, severe: 7 }
             ];
-            fetchData('HFMD', url, 'hfmd-body', 'hfmd-loading', fallback, 'province', 'patient', 'severe');
+            fetchData('HFMD', url, 'hfmd-body', 'hfmd-loading', 'hfmd-status', fallback, 'province', 'patient', 'severe');
         }
     </script>
 </body>
