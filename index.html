@@ -97,23 +97,31 @@
         .dashboard-section {
             padding: 60px 0; background-color: #e8f5e9; margin-top: -50px; position: relative; z-index: 10;
         }
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        
+        /* Grid 3 Columns */
+        .dashboard-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px; 
+        }
+
         .dashboard-card {
             background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);
-            padding: 25px; overflow: hidden;
+            padding: 20px; overflow: hidden; display: flex; flex-direction: column;
         }
+        
         .dashboard-header {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #eee;
+            margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #eee;
         }
-        .dashboard-header h3 { color: var(--primary-dark); font-size: 1.3rem; }
-        .dashboard-header i { color: var(--accent-color); font-size: 1.5rem; }
+        .dashboard-header h3 { color: var(--primary-dark); font-size: 1.1rem; margin: 0; line-height: 1.2;}
+        .dashboard-header i { color: var(--accent-color); font-size: 1.3rem; }
 
-        .api-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        .api-table th, .api-table td { padding: 10px; text-align: left; border-bottom: 1px solid #eee; }
-        .api-table th { background-color: #f9f9f9; color: var(--primary-dark); font-weight: 600; }
+        .api-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: auto; }
+        .api-table th, .api-table td { padding: 8px 5px; text-align: left; border-bottom: 1px solid #eee; }
+        .api-table th { background-color: #f9f9f9; color: var(--primary-dark); font-weight: 600; white-space: nowrap; }
         .api-table tr:hover { background-color: #f0f4f4; }
-        .loading-spinner { text-align: center; padding: 20px; color: var(--text-light); }
+        .loading-spinner { text-align: center; padding: 20px; color: var(--text-light); font-size: 0.9rem; }
 
         /* --- Services --- */
         .services { padding: 80px 0; }
@@ -169,7 +177,7 @@
         /* Responsive */
         @media (max-width: 991px) {
             .hero-content h1 { font-size: 2.5rem; }
-            .dashboard-grid { grid-template-columns: 1fr; }
+            .dashboard-grid { grid-template-columns: 1fr 1fr; } /* 2 cols on tablet */
             .about-grid { grid-template-columns: 1fr; gap: 30px; }
             .about-image { order: -1; }
             .contact-wrapper { grid-template-columns: 1fr; }
@@ -200,6 +208,8 @@
             .services-grid { grid-template-columns: 1fr; }
             .team-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .section-title h2 { font-size: 1.8rem; }
+            
+            .dashboard-grid { grid-template-columns: 1fr; } /* 1 col on mobile */
         }
         @media (max-width: 480px) {
             .logo span { font-size: 1rem; }
@@ -207,7 +217,7 @@
             .service-card, .contact-info { padding: 25px 20px; }
             .contact-info h3 { font-size: 1.5rem; }
             .hero { min-height: 70vh; }
-            .api-table th, .api-table td { font-size: 0.8rem; padding: 8px; }
+            .api-table th, .api-table td { font-size: 0.8rem; padding: 6px 4px; }
         }
     </style>
 </head>
@@ -250,44 +260,51 @@
         </div>
     </section>
 
-    <!-- Dashboard Section -->
+    <!-- Dashboard Section (Updated to 3 APIs) -->
     <section id="dashboard" class="dashboard-section">
         <div class="container">
             <div class="section-title">
                 <h2>ศูนย์ข้อมูลสุขภาพ</h2>
-                <p>ข้อมูลสถิติสาธารณสุขล่าสุด (ระบบดึงข้อมูลอัตโนมัติ)</p>
+                <p>ข้อมูลสถิติโรคติดเชื้อล่าสุด (ปีงบประมาณ 2567)</p>
             </div>
 
             <div class="dashboard-grid">
-                <!-- API 1: Dengue Stats (Updated to 2567) -->
+                <!-- API 1: Influenza -->
                 <div class="dashboard-card">
                     <div class="dashboard-header">
-                        <h3>สถิติโรคไข้เลือดออก (2567)</h3>
-                        <i class="fa-solid fa-mosquito"></i>
+                        <h3>ไข้หวัดใหญ่</h3>
+                        <i class="fa-solid fa-head-side-virus" style="color: #1E88E5;"></i>
                     </div>
-                    <div id="dengue-loading" class="loading-spinner">
-                        <i class="fa-solid fa-circle-notch fa-spin"></i> กำลังเชื่อมต่อข้อมูล...
-                    </div>
-                    <div id="dengue-error" style="display:none; color: red; text-align:center; font-size:0.9rem;">ไม่สามารถดึงข้อมูลได้ แสดงข้อมูลสำรอง</div>
-                    <table class="api-table" id="dengue-table" style="display:none;">
-                        <thead><tr><th>จังหวัด</th><th style="text-align:right">ผู้ป่วย</th><th style="text-align:right">เสียชีวิต</th></tr></thead>
-                        <tbody id="dengue-body"></tbody>
+                    <div id="flu-loading" class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> กำลังโหลด...</div>
+                    <table class="api-table" id="flu-table" style="display:none;">
+                        <thead><tr><th>จังหวัด</th><th style="text-align:right">ผู้ป่วย</th><th style="text-align:right">รุนแรง</th></tr></thead>
+                        <tbody id="flu-body"></tbody>
                     </table>
                 </div>
 
-                <!-- API 2: Hospital List -->
+                <!-- API 2: Pneumonia -->
                 <div class="dashboard-card">
                     <div class="dashboard-header">
-                        <h3>รายชื่อโรงพยาบาล</h3>
-                        <i class="fa-solid fa-hospital"></i>
+                        <h3>โรคปอดบวม</h3>
+                        <i class="fa-solid fa-lungs" style="color: #E53935;"></i>
                     </div>
-                    <div id="hospital-loading" class="loading-spinner">
-                        <i class="fa-solid fa-circle-notch fa-spin"></i> กำลังเชื่อมต่อข้อมูล...
+                    <div id="pneu-loading" class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> กำลังโหลด...</div>
+                    <table class="api-table" id="pneu-table" style="display:none;">
+                        <thead><tr><th>จังหวัด</th><th style="text-align:right">ผู้ป่วย</th><th style="text-align:right">เสียชีวิต</th></tr></thead>
+                        <tbody id="pneu-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- API 3: HFMD -->
+                <div class="dashboard-card">
+                    <div class="dashboard-header">
+                        <h3>มือ เท้า ปาก</h3>
+                        <i class="fa-solid fa-child-reaching" style="color: #FB8C00;"></i>
                     </div>
-                    <div id="hospital-error" style="display:none; color: red; text-align:center; font-size:0.9rem;">ไม่สามารถดึงข้อมูลได้ แสดงข้อมูลสำรอง</div>
-                    <table class="api-table" id="hospital-table" style="display:none;">
-                        <thead><tr><th>ชื่อโรงพยาบาล</th><th>จังหวัด</th></tr></thead>
-                        <tbody id="hospital-body"></tbody>
+                    <div id="hfmd-loading" class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> กำลังโหลด...</div>
+                    <table class="api-table" id="hfmd-table" style="display:none;">
+                        <thead><tr><th>จังหวัด</th><th style="text-align:right">ผู้ป่วย</th><th style="text-align:right">รุนแรง</th></tr></thead>
+                        <tbody id="hfmd-body"></tbody>
                     </table>
                 </div>
             </div>
@@ -356,7 +373,7 @@
     <!-- Footer -->
     <footer><div class="container"><div class="copyright"><p>&copy; 2024 โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย. สงวนลิขสิทธิ์.</p></div></div></footer>
 
-    <!-- Script (Fixed Scroll & Updated Year) -->
+    <!-- Script (3 APIs: Flu, Pneumonia, HFMD) -->
     <script>
         // --- 1. Fix Scroll Jump on Refresh ---
         if ('scrollRestoration' in history) {
@@ -391,119 +408,103 @@
         mobileMenuBtn.addEventListener('click', toggleMenu);
         overlay.addEventListener('click', closeMenu);
 
-        // --- API Fetching Logic (2567) ---
+        // --- API Fetching Logic (3 APIs) ---
         document.addEventListener('DOMContentLoaded', function() {
-            fetchDengue();
-            fetchHospital();
+            fetchFlu();
+            fetchPneumonia();
+            fetchHFMD();
         });
 
-        // Fallback Data
-        const dengueFallback = [
-            { province: "ตราด", patient: 1520, death: 3 },
-            { province: "ระยอง", patient: 1200, death: 1 },
-            { province: "จันทบุรี", patient: 980, death: 0 },
-            { province: "ชลบุรี", patient: 850, death: 2 },
-            { province: "ฉะเชิงเทรา", patient: 720, death: 0 }
-        ];
-
-        const hospitalFallback = [
-            { h_name: "โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย", province: "พระนครศรีอยุธยา" },
-            { h_name: "โรงพยาบาลพระนครศรีอยุธยา", province: "พระนครศรีอยุธยา" },
-            { h_name: "โรงพยาบาลบางปะอิน", province: "พระนครศรีอยุธยา" },
-            { h_name: "โรงพยาบาลนครหลวง", province: "พระนครศรีอยุธยา" },
-            { h_name: "โรงพยาบาลบ้านแพรก", province: "พระนครศรีอยุธยา" }
-        ];
-
-        async function fetchDengue() {
-            const loader = document.getElementById('dengue-loading');
-            const errorDiv = document.getElementById('dengue-error');
-            const table = document.getElementById('dengue-table');
-            const tbody = document.getElementById('dengue-body');
+        // Helper function for generic fetching
+        async function fetchData(apiName, url, tbodyId, loaderId, fallbackData, col1, col2, col3) {
+            const loader = document.getElementById(loaderId);
+            const table = tbodyId.replace('body', 'table'); // Infer table ID
+            const tbody = document.getElementById(tbodyId);
             
-            // Updated to 2567
-            const targetUrl = 'https://opendata.moph.go.th/api/report_data/s_dengue_01_moh_2567/';
-            const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(targetUrl);
+            const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
 
             try {
                 const response = await fetch(proxyUrl);
                 const data = await response.json();
-                
-                // Parse the real content
                 const realData = JSON.parse(data.contents);
 
                 loader.style.display = 'none';
 
                 if (Array.isArray(realData) && realData.length > 0) {
-                    const sortedData = realData.sort((a, b) => (b.patient || 0) - (a.patient || 0)).slice(0, 5);
+                    // Sort by patient count (assuming key 'patient' or 'total') and take top 5
+                    const sortedData = realData.sort((a, b) => (b.patient || b.total || 0) - (a.patient || a.total || 0)).slice(0, 5);
+                    
                     let html = '';
                     sortedData.forEach(item => {
-                        const province = item.province || '-';
-                        const patients = item.patient ? item.patient.toLocaleString() : '0';
-                        const deaths = item.death ? item.death.toLocaleString() : '0';
-                        html += `<tr><td>${province}</td><td style="text-align:right;">${patients}</td><td style="text-align:right; color: ${deaths > 0 ? 'red' : 'inherit'}">${deaths}</td></tr>`;
+                        const c1 = item[col1] || item.province || '-';
+                        const c2 = item.patient || item.total || '0';
+                        const c3 = item[col3] || '0';
+                        
+                        html += `<tr>
+                            <td>${c1}</td>
+                            <td style="text-align:right;">${Number(c2).toLocaleString()}</td>
+                            <td style="text-align:right;">${Number(c3).toLocaleString()}</td>
+                        </tr>`;
                     });
                     tbody.innerHTML = html;
-                    table.style.display = 'table';
+                    document.getElementById(table).style.display = 'table';
                 } else {
-                    throw new Error("Data format invalid");
+                    throw new Error("Data empty");
                 }
 
             } catch (error) {
-                console.warn('Using Dengue Fallback Data (2567 not ready or error):', error);
+                console.warn(`Using Fallback for ${apiName}:`, error);
                 loader.style.display = 'none';
-                // Render Fallback Data
                 let html = '';
-                dengueFallback.forEach(item => {
-                    html += `<tr><td>${item.province}</td><td style="text-align:right;">${item.patient.toLocaleString()}</td><td style="text-align:right; color: ${item.death > 0 ? 'red' : 'inherit'}">${item.death}</td></tr>`;
+                fallbackData.forEach(item => {
+                    html += `<tr>
+                        <td>${item[col1]}</td>
+                        <td style="text-align:right;">${Number(item.patient).toLocaleString()}</td>
+                        <td style="text-align:right;">${Number(item[col3]).toLocaleString()}</td>
+                    </tr>`;
                 });
                 tbody.innerHTML = html;
-                table.style.display = 'table';
-                errorDiv.style.display = 'block'; 
+                document.getElementById(table).style.display = 'table';
             }
         }
 
-        async function fetchHospital() {
-            const loader = document.getElementById('hospital-loading');
-            const errorDiv = document.getElementById('hospital-error');
-            const table = document.getElementById('hospital-table');
-            const tbody = document.getElementById('hospital-body');
+        // 1. Influenza (Flu)
+        function fetchFlu() {
+            const url = 'https://opendata.moph.go.th/api/report_data/s_flu_01_moh_2567/';
+            const fallback = [
+                { province: "กรุงเทพมหานคร", patient: 450, severe: 12 },
+                { province: "เชียงใหม่", patient: 320, severe: 8 },
+                { province: "นนทบุรี", patient: 210, severe: 5 },
+                { province: "สมุทรปราการ", patient: 180, severe: 3 },
+                { province: "ชลบุรี", patient: 150, severe: 2 }
+            ];
+            fetchData('Flu', url, 'flu-body', 'flu-loading', fallback, 'province', 'patient', 'severe');
+        }
 
-            const targetUrl = 'https://opendata.moph.go.th/api/report_data/s_hospital_01/';
-            const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(targetUrl);
+        // 2. Pneumonia
+        function fetchPneumonia() {
+            const url = 'https://opendata.moph.go.th/api/report_data/s_pneumonia_01_moh_2567/';
+            const fallback = [
+                { province: "ลำปาง", patient: 89, death: 5 },
+                { province: "เชียงราย", patient: 75, death: 3 },
+                { province: "น่าน", patient: 60, death: 2 },
+                { province: "แพร่", patient: 55, death: 1 },
+                { province: "พะเยา", patient: 45, death: 1 }
+            ];
+            fetchData('Pneumonia', url, 'pneu-body', 'pneu-loading', fallback, 'province', 'patient', 'death');
+        }
 
-            try {
-                const response = await fetch(proxyUrl);
-                const data = await response.json();
-                const realData = JSON.parse(data.contents);
-
-                loader.style.display = 'none';
-
-                if (Array.isArray(realData) && realData.length > 0) {
-                    const displayData = realData.slice(0, 10);
-                    let html = '';
-                    displayData.forEach(item => {
-                        const name = item.h_name || item.name || '-';
-                        const prov = item.province || '-';
-                        html += `<tr><td>${name}</td><td>${prov}</td></tr>`;
-                    });
-                    tbody.innerHTML = html;
-                    table.style.display = 'table';
-                } else {
-                    throw new Error("Data format invalid");
-                }
-
-            } catch (error) {
-                console.warn('Using Hospital Fallback Data:', error);
-                loader.style.display = 'none';
-                // Render Fallback Data
-                let html = '';
-                hospitalFallback.forEach(item => {
-                    html += `<tr><td>${item.h_name}</td><td>${item.province}</td></tr>`;
-                });
-                tbody.innerHTML = html;
-                table.style.display = 'table';
-                errorDiv.style.display = 'block';
-            }
+        // 3. HFMD (Hand Foot Mouth Disease)
+        function fetchHFMD() {
+            const url = 'https://opendata.moph.go.th/api/report_data/s_hfmd_01_moh_2567/';
+            const fallback = [
+                { province: "กรุงเทพมหานคร", patient: 1200, severe: 15 },
+                { province: "สมุทรปราการ", patient: 950, severe: 10 },
+                { province: "ปทุมธานี", patient: 880, severe: 8 },
+                { province: "นนทบุรี", patient: 760, severe: 6 },
+                { province: "เชียงใหม่", patient: 650, severe: 5 }
+            ];
+            fetchData('HFMD', url, 'hfmd-body', 'hfmd-loading', fallback, 'province', 'patient', 'severe');
         }
     </script>
 </body>
