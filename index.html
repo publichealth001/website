@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ศูนย์เฝ้าระวังสุขภาพ รพ.สต.คลองน้อย</title>
+    <title>Smart Dashboard - รพ.สต.คลองน้อย</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&family=Sarabun:wght@400;500&display=swap" rel="stylesheet">
@@ -13,100 +13,140 @@
         body {
             background-color: #ecf0f1;
             font-family: 'Sarabun', sans-serif;
-            height: 100vh;
-            overflow: hidden; 
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding-bottom: 60px; /* เผื่อพื้นที่ให้ตัววิ่งด้านล่าง */
         }
+
+        /* --- Responsive Typography & Layout --- */
 
         /* Header */
         .header-bar {
             background: linear-gradient(to right, #006400, #00843D);
             color: white;
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 1rem 1.5rem;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             z-index: 10;
         }
-        .app-title h1 { font-family: 'Prompt', sans-serif; font-weight: 700; font-size: 2rem; margin: 0; }
-        .app-title p { margin: 0; opacity: 0.9; font-size: 1rem; }
-        
-        .clock-widget { text-align: right; }
-        .time-text { font-family: 'Prompt', sans-serif; font-size: 2.5rem; font-weight: 600; line-height: 1; }
-        .date-text { font-size: 1rem; opacity: 0.8; }
 
-        /* Main Content */
+        /* Cards Container */
         .main-content {
             flex: 1;
-            padding: 2rem;
+            padding: 1.5rem;
             display: flex;
-            align-items: center;
+            align-items: center; /* จัดกึ่งกลางแนวตั้งเฉพาะจอใหญ่ */
         }
 
-        /* Cards */
         .metric-card {
             background: white;
             border-radius: 20px;
-            padding: 2rem;
-            height: 100%;
+            padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: transform 0.3s ease;
+            height: 100%; /* ให้การ์ดสูงเท่ากันในแถวเดียวกัน */
             display: flex;
             flex-direction: column;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
+            align-items: center;
         }
-        .metric-card:hover { transform: translateY(-5px); }
-        
+
         .card-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
             opacity: 0.8;
         }
 
         .value-display {
             font-family: 'Prompt', sans-serif;
-            font-size: 5rem;
             font-weight: 700;
             line-height: 1;
             margin: 10px 0;
             color: #2c3e50;
+            font-size: 3.5rem; /* ขนาดเริ่มต้นสำหรับมือถือ */
         }
-        .unit-label { font-size: 1.2rem; color: #7f8c8d; font-weight: 500; }
+
+        .unit-label { font-size: 1rem; color: #7f8c8d; font-weight: 500; }
         
         .status-badge {
-            margin-top: 1.5rem;
-            padding: 0.5rem 1.5rem;
+            margin-top: 1rem;
+            padding: 0.4rem 1.2rem;
             border-radius: 50px;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: white;
             display: inline-block;
         }
 
-        /* Colors */
+        /* --- Media Queries (การปรับแต่งตามขนาดหน้าจอ) --- */
+        
+        /* Tablet & Desktop (หน้าจอที่กว้างกว่า 992px) */
+        @media (min-width: 992px) {
+            body {
+                height: 100vh; /* ล็อคความสูงหน้าจอ */
+                overflow: hidden; /* ซ่อน Scrollbar */
+            }
+            .header-bar {
+                padding: 1.5rem 2rem;
+            }
+            .value-display {
+                font-size: 5rem; /* ขยายตัวเลขให้ใหญ่ขึ้น */
+            }
+            .card-icon {
+                font-size: 4rem;
+            }
+            .main-content {
+                padding: 2rem;
+            }
+        }
+
+        /* Mobile (หน้าจอเล็ก) */
+        @media (max-width: 767px) {
+            .header-bar {
+                flex-direction: column; /* เรียงลงแนวตั้ง */
+                text-align: center;
+                gap: 10px;
+            }
+            .clock-widget {
+                text-align: center !important;
+                margin-top: 5px;
+            }
+            .time-text {
+                font-size: 2rem !important;
+            }
+            .app-title h1 {
+                font-size: 1.5rem;
+            }
+            .main-content {
+                align-items: flex-start; /* ให้เริ่มเรียงจากด้านบน */
+            }
+        }
+
+        /* Colors & Misc */
         .color-weather { color: #3498db; }
         .color-pm { color: #e67e22; }
         .color-uv { color: #9b59b6; }
+
+        .time-text { font-family: 'Prompt', sans-serif; font-size: 2.5rem; font-weight: 600; line-height: 1; }
+        .date-text { font-size: 0.9rem; opacity: 0.9; }
 
         /* Footer Ticker */
         .ticker-wrap {
             position: fixed;
             bottom: 0;
+            left: 0;
             width: 100%;
             background-color: #2c3e50;
             color: white;
-            padding: 12px 0;
-            font-size: 1.2rem;
+            padding: 10px 0;
+            font-size: 1rem;
+            z-index: 100;
         }
         .ticker-move {
             display: inline-block;
             white-space: nowrap;
-            animation: ticker 30s linear infinite;
+            animation: ticker 25s linear infinite;
         }
         @keyframes ticker {
             0% { transform: translate3d(100vw, 0, 0); }
@@ -116,38 +156,38 @@
 </head>
 <body>
 
-    <header class="header-bar">
+    <header class="header-bar d-flex justify-content-between align-items-center">
         <div class="app-title">
-            <h1><i class="fas fa-heartbeat"></i> ศูนย์เฝ้าระวังสุขภาพ</h1>
-            <p>รพ.สต.คลองน้อย ต.คลองน้อย อ.บ้านแพรก</p>
+            <h1 class="mb-0"><i class="fas fa-heartbeat"></i> ศูนย์เฝ้าระวังสุขภาพ</h1>
+            <p class="mb-0 small">รพ.สต.คลองน้อย ต.คลองน้อย อ.บ้านแพรก</p>
         </div>
-        <div class="clock-widget">
+        <div class="clock-widget text-end">
             <div id="clock" class="time-text">--:--</div>
             <div id="date" class="date-text">กำลังโหลดเวลา...</div>
         </div>
     </header>
 
     <div class="container-fluid main-content">
-        <div class="row w-100 g-4" style="height: 65vh;">
+        <div class="row w-100 g-4 justify-content-center">
             
-            <div class="col-md-4">
+            <div class="col-12 col-md-6 col-lg-4">
                 <div class="metric-card border-top border-5 border-primary">
                     <div class="card-icon color-weather"><i class="fas fa-cloud-sun-rain"></i></div>
-                    <h3 class="text-muted">สภาพอากาศ (ต.คลองน้อย)</h3>
+                    <h3 class="text-muted h5">สภาพอากาศ</h3>
                     
                     <div id="weather-val" class="value-display">--</div>
                     <div class="unit-label">องศาเซลเซียส (°C)</div>
                     
-                    <div class="mt-3 text-muted fs-5">
+                    <div class="mt-3 text-muted">
                         <i class="fas fa-tint"></i> ความชื้น: <span id="humidity-val" class="fw-bold">--</span>%
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-12 col-md-6 col-lg-4">
                 <div class="metric-card border-top border-5 border-warning">
                     <div class="card-icon color-pm"><i class="fas fa-lungs-virus"></i></div>
-                    <h3 class="text-muted">ฝุ่น PM 2.5</h3>
+                    <h3 class="text-muted h5">ฝุ่น PM 2.5</h3>
                     
                     <div id="pm-val" class="value-display">--</div>
                     <div class="unit-label">ไมโครกรัม/ลบ.ม. (µg/m³)</div>
@@ -158,15 +198,15 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-12 col-md-6 col-lg-4">
                 <div class="metric-card border-top border-5 border-danger">
                     <div class="card-icon color-uv"><i class="fas fa-sun"></i></div>
-                    <h3 class="text-muted">ดัชนียูวี</h3>
+                    <h3 class="text-muted h5">ดัชนียูวี (UV Index)</h3>
                     
                     <div id="uv-val" class="value-display">--</div>
                     <div class="unit-label">ความแรงรังสี UV</div>
                     
-                    <div id="uv-advice" class="mt-3 fs-5 text-muted">
+                    <div id="uv-advice" class="mt-3 text-muted">
                         กำลังประมวลผล...
                     </div>
                 </div>
@@ -177,12 +217,11 @@
 
     <div class="ticker-wrap">
         <div class="ticker-move">
-            📢 <strong>ประกาศ 2569:</strong> รณรงค์ฉีดวัคซีนป้องกันไข้หวัดใหญ่ฟรี สำหรับกลุ่มเสี่ยง 608 ที่ รพ.สต.คลองน้อย | <strong>แจ้งเตือน:</strong> หากค่าฝุ่น PM 2.5 เป็นสีส้ม/แดง ควรงดกิจกรรมกลางแจ้งและสวมหน้ากาก N95 | ดูแลสุขภาพ ดื่มน้ำสะอาด และพักผ่อนให้เพียงพอ ด้วยความปรารถนาดีจาก รพ.สต.คลองน้อย
+            📢 <strong>ประกาศ 2569:</strong> รณรงค์ฉีดวัคซีนป้องกันไข้หวัดใหญ่ฟรี สำหรับกลุ่มเสี่ยง 608 ที่ รพ.สต.คลองน้อย | <strong>แจ้งเตือน:</strong> หากค่าฝุ่น PM 2.5 เป็นสีส้ม/แดง ควรงดกิจกรรมกลางแจ้งและสวมหน้ากาก N95 | ดูแลสุขภาพ ดื่มน้ำสะอาด และพักผ่อนให้เพียงพอ
         </div>
     </div>
 
     <script>
-        // *** อัปเดตพิกัดตามที่ผู้ใช้งานแจ้ง ***
         const LAT = 14.652604878825167;
         const LON = 100.55086772750929;
 
@@ -190,7 +229,7 @@
         function updateClock() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
-            const dateStr = now.toLocaleDateString('th-TH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const dateStr = now.toLocaleDateString('th-TH', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
             document.getElementById('clock').innerText = timeStr;
             document.getElementById('date').innerText = dateStr;
         }
@@ -200,18 +239,15 @@
         // 2. Fetch Weather & UV
         async function fetchWeatherAndUV() {
             try {
-                // ดึงข้อมูลตามพิกัด LAT/LON ที่ระบุ
                 const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m&hourly=uv_index&timezone=Asia%2FBangkok`;
                 const res = await fetch(url);
                 const data = await res.json();
 
-                // Temp & Humidity
-                const temp = data.current.temperature_2m;
-                const humidity = data.current.relative_humidity_2m;
-                document.getElementById('weather-val').innerText = temp;
-                document.getElementById('humidity-val').innerText = humidity;
+                // Temp
+                document.getElementById('weather-val').innerText = data.current.temperature_2m;
+                document.getElementById('humidity-val').innerText = data.current.relative_humidity_2m;
 
-                // UV Index (Current Hour)
+                // UV
                 const currentHour = new Date().getHours();
                 const uvIndex = data.hourly.uv_index[currentHour];
                 
@@ -225,18 +261,17 @@
                     uvAdviceEl.innerHTML = '<span class="text-success"><i class="fas fa-smile"></i> ปลอดภัย</span>';
                 } else if (uvIndex <= 5) {
                     uvValEl.style.color = "#f1c40f"; 
-                    uvAdviceEl.innerHTML = '<span class="text-warning"><i class="fas fa-hat-cowboy"></i> ปานกลาง</span> สวมหมวก/แว่น';
+                    uvAdviceEl.innerHTML = '<span class="text-warning"><i class="fas fa-hat-cowboy"></i> ปานกลาง</span>';
                 } else if (uvIndex <= 7) {
                     uvValEl.style.color = "#e67e22"; 
                     uvAdviceEl.innerHTML = '<span class="text-danger"><i class="fas fa-umbrella"></i> สูง</span> ทาครีมกันแดด';
                 } else {
                     uvValEl.style.color = "#e74c3c"; 
-                    uvAdviceEl.innerHTML = '<span class="text-danger fw-bold"><i class="fas fa-exclamation-triangle"></i> อันตราย</span> งดออกแดด';
+                    uvAdviceEl.innerHTML = '<span class="text-danger fw-bold"><i class="fas fa-exclamation-triangle"></i> อันตราย</span>';
                 }
 
             } catch (error) {
-                console.error("Weather/UV Error:", error);
-                document.getElementById('weather-val').innerText = "-";
+                console.error("Weather/UV Error");
             }
         }
 
@@ -248,43 +283,32 @@
                 const data = await res.json();
 
                 const pm25 = data.current.pm2_5;
-                const pmValEl = document.getElementById('pm-val');
                 const pmStatusEl = document.getElementById('pm-status');
 
-                pmValEl.innerText = pm25;
+                document.getElementById('pm-val').innerText = pm25;
 
-                // Color Logic
                 if (pm25 <= 15) { 
-                    pmStatusEl.style.backgroundColor = "#3498db"; 
-                    pmStatusEl.innerText = "ดีมาก";
+                    pmStatusEl.style.backgroundColor = "#3498db"; pmStatusEl.innerText = "ดีมาก";
                 } else if (pm25 <= 25) { 
-                    pmStatusEl.style.backgroundColor = "#2ecc71";
-                    pmStatusEl.innerText = "ดี";
+                    pmStatusEl.style.backgroundColor = "#2ecc71"; pmStatusEl.innerText = "ดี";
                 } else if (pm25 <= 37.5) { 
-                    pmStatusEl.style.backgroundColor = "#f1c40f";
-                    pmStatusEl.style.color = "#333";
-                    pmStatusEl.innerText = "ปานกลาง";
+                    pmStatusEl.style.backgroundColor = "#f1c40f"; pmStatusEl.style.color = "#333"; pmStatusEl.innerText = "ปานกลาง";
                 } else if (pm25 <= 75) { 
-                    pmStatusEl.style.backgroundColor = "#e67e22";
-                    pmStatusEl.innerText = "เริ่มมีผล";
+                    pmStatusEl.style.backgroundColor = "#e67e22"; pmStatusEl.innerText = "เริ่มมีผล";
                 } else { 
-                    pmStatusEl.style.backgroundColor = "#e74c3c";
-                    pmStatusEl.innerText = "อันตราย";
+                    pmStatusEl.style.backgroundColor = "#e74c3c"; pmStatusEl.innerText = "อันตราย";
                 }
 
             } catch (error) {
-                console.error("PM2.5 Error:", error);
-                document.getElementById('pm-val').innerText = "-";
+                console.error("PM2.5 Error");
             }
         }
 
         window.onload = function() {
             fetchWeatherAndUV();
             fetchPM25();
-            setInterval(() => { fetchWeatherAndUV(); fetchPM25(); }, 900000); // 15 mins refresh
+            setInterval(() => { fetchWeatherAndUV(); fetchPM25(); }, 900000);
         };
     </script>
 </body>
 </html>
-
-
