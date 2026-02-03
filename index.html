@@ -76,27 +76,25 @@
         .btn-location:active { transform: scale(0.95); }
 
         .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .env-card { background: #f8f9fa; padding: 25px; border-radius: 12px; border: 1px solid #eee; transition: 0.3s; border-top: 5px solid transparent; }
+        .env-card { background: #f8f9fa; padding: 25px; border-radius: 12px; border: 1px solid #eee; transition: 0.3s; border-top: 5px solid transparent; text-align: center; }
         .env-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.08); }
         .env-card.air { border-top-color: #795548; }
         .env-card.weather { border-top-color: #42a5f5; }
         .env-card.uv { border-top-color: #ffa726; }
 
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .card-header { display: flex; justify-content: center; align-items: center; margin-bottom: 15px; }
         .card-title { font-size: 1.1rem; font-weight: 600; color: #555; display: flex; align-items: center; gap: 8px; }
-        .data-value { font-size: 2.8rem; font-weight: 700; color: var(--primary-dark); line-height: 1; }
-        .data-unit { font-size: 1rem; color: #888; font-weight: 400; margin-left: 5px; }
         
-        /* ส่วนระบุสถานะ (ใหม่) */
-        .sys-status { 
-            font-size: 0.75rem; color: #999; margin-top: 5px; font-family: monospace; display: block; 
+        .data-wrapper { margin-bottom: 15px; }
+        .data-value { font-size: 3.5rem; font-weight: 700; color: var(--primary-dark); line-height: 1; }
+        .data-unit { font-size: 1.2rem; color: #888; font-weight: 400; margin-left: 5px; }
+        
+        .location-badge { background: #e3f2fd; color: #1565c0; font-size: 0.85rem; padding: 6px 12px; border-radius: 20px; display: inline-block; font-weight: 500; margin-bottom: 15px; }
+        
+        .status-badge { 
+            display: inline-block; padding: 8px 25px; border-radius: 50px; font-size: 1rem; 
+            font-weight: 600; color: white; min-width: 120px;
         }
-        .sys-status.error { color: #d32f2f; }
-        .sys-status.success { color: #00796b; }
-
-        .location-badge { background: #e3f2fd; color: #1565c0; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; margin-top: 8px; display: inline-block; font-weight: 500; }
-        .status-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; color: white; margin-top: 10px; }
-        .advice-box { margin-top: 15px; font-size: 0.9rem; color: #444; background: white; padding: 10px; border-radius: 8px; border: 1px dashed #ddd; }
 
         /* --- 2. About Hospital --- */
         .about-container { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
@@ -106,6 +104,7 @@
         .about-content h4 { font-size: 1.8rem; color: var(--primary-dark); margin-bottom: 20px; }
         .about-content p { margin-bottom: 20px; color: var(--text-light); font-size: 1.05rem; text-align: justify; }
         .highlight-box { background: var(--primary-light); padding: 20px; border-radius: 10px; border-left: 5px solid var(--primary-color); }
+        .highlight-box strong { color: var(--primary-dark); display: block; margin-bottom: 5px; }
 
         /* --- 3. Services --- */
         .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
@@ -157,7 +156,7 @@
         <p>ส่งเสริม ป้องกัน และฟื้นฟูสุขภาพคนไทย ให้แข็งแรง มีสุขภาพดี ด้วยทีมงานมืออาชีพและอุปกรณ์ทันสมัย</p>
     </section>
 
-    <!-- 1. Dashboard Section -->
+    <!-- 1. Dashboard Section (Cleaned) -->
     <div class="container">
         <div class="dashboard-section">
             <div class="location-control">
@@ -175,17 +174,13 @@
                     <div class="card-header">
                         <span class="card-title"><i class="fas fa-smog" style="color:#795548"></i> ฝุ่น PM2.5</span>
                     </div>
-                    <div>
+                    <div class="data-wrapper">
                         <span class="data-value" id="val-pm25">--</span><span class="data-unit">µg/m³</span>
                     </div>
-                    <!-- แสดงสถานะระบบ (Debug) -->
-                    <span id="status-pm25" class="sys-status">รอข้อมูล...</span>
-                    
                     <div class="location-badge">
-                        <i class="fas fa-map-marker-alt"></i> <span id="loc-pm25">กรุงเทพฯ (ค่าเริ่มต้น)</span>
+                        <i class="fas fa-map-marker-alt"></i> <span id="loc-pm25">กรุงเทพฯ</span>
                     </div>
-                    <div class="status-badge" id="badge-pm25" style="background:#ccc;">กำลังตรวจสอบ</div>
-                    <div class="advice-box" id="adv-pm25">รอข้อมูล...</div>
+                    <div class="status-badge" id="badge-pm25" style="background:#ccc;">--</div>
                 </div>
 
                 <!-- Weather Card -->
@@ -193,17 +188,13 @@
                     <div class="card-header">
                         <span class="card-title"><i class="fas fa-cloud-sun" style="color:#42a5f5"></i> อุณหภูมิ</span>
                     </div>
-                    <div>
+                    <div class="data-wrapper">
                         <span class="data-value" id="val-temp">--</span><span class="data-unit">°C</span>
                     </div>
-                    <!-- แสดงสถานะระบบ (Debug) -->
-                    <span id="status-temp" class="sys-status">รอข้อมูล...</span>
-
                     <div class="location-badge">
-                        <i class="fas fa-map-marker-alt"></i> <span id="loc-weather">กรุงเทพฯ (ค่าเริ่มต้น)</span>
+                        <i class="fas fa-map-marker-alt"></i> <span id="loc-weather">กรุงเทพฯ</span>
                     </div>
-                    <div class="status-badge" id="badge-temp" style="background:#ccc;">กำลังตรวจสอบ</div>
-                    <div class="advice-box" id="adv-temp">รอข้อมูล...</div>
+                    <div class="status-badge" id="badge-temp" style="background:#ccc;">--</div>
                 </div>
 
                 <!-- UV Index Card -->
@@ -211,17 +202,13 @@
                     <div class="card-header">
                         <span class="card-title"><i class="fas fa-sun" style="color:#ffa726"></i> ดัชนี UV</span>
                     </div>
-                    <div>
+                    <div class="data-wrapper">
                         <span class="data-value" id="val-uv">--</span><span class="data-unit">Index</span>
                     </div>
-                    <!-- แสดงสถานะระบบ (Debug) -->
-                    <span id="status-uv" class="sys-status">รอข้อมูล...</span>
-
                     <div class="location-badge">
-                        <i class="fas fa-map-marker-alt"></i> <span id="loc-uv">กรุงเทพฯ (ค่าเริ่มต้น)</span>
+                        <i class="fas fa-map-marker-alt"></i> <span id="loc-uv">กรุงเทพฯ</span>
                     </div>
-                    <div class="status-badge" id="badge-uv" style="background:#ccc;">กำลังตรวจสอบ</div>
-                    <div class="advice-box" id="adv-uv">รอข้อมูล...</div>
+                    <div class="status-badge" id="badge-uv" style="background:#ccc;">--</div>
                 </div>
             </div>
         </div>
@@ -345,7 +332,6 @@
             </div>
             
             <div class="contact-map">
-                <!-- สำหรับ Google Maps Embed -->
                 <div style="text-align:center; color:white;">
                     <i class="fas fa-map-marked-alt fa-4x" style="opacity:0.5;"></i>
                     <p style="margin-top:10px; font-weight:bold;">พื้นที่สำหรับ Google Maps Embed</p>
@@ -359,12 +345,12 @@
         <p>&copy; 2023 โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย | สำนักงานสาธารณสุขจังหวัด</p>
     </footer>
 
-    <!-- Javascript (Fixed Independent Fetching) -->
+    <!-- Javascript (Cleaned & Fixed UV) -->
     <script>
         // --- Configuration ---
         let LAT = 13.7563; 
         let LON = 100.5018;
-        let LOCATION_NAME = "กรุงเทพฯ (ค่าเริ่มต้น)";
+        let LOCATION_NAME = "กรุงเทพฯ";
 
         document.addEventListener('DOMContentLoaded', () => {
             setMockData(); 
@@ -392,11 +378,7 @@
             LAT = position.coords.latitude;
             LON = position.coords.longitude;
 
-            console.log(`พบตำแหน่ง: ${LAT}, ${LON}`);
-
             getLocationName(LAT, LON);
-            
-            // ดึงข้อมูลใหม่ทั้งหมด
             fetchRealData();
         }
 
@@ -405,21 +387,12 @@
             let errorMsg = "";
             
             switch(error.code) {
-                case error.PERMISSION_DENIED:
-                    errorMsg = "คุณปฏิเสธการขอเข้าถึงตำแหน่ง (กรุณาอนุญาตใน Settings)";
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    errorMsg = "ไม่สามารถหาพิกัดได้ในขณะนี้";
-                    break;
-                case error.TIMEOUT:
-                    errorMsg = "หมดเวลาค้นหา GPS (ลองย้ายไปที่โล่งๆ)";
-                    break;
-                default:
-                    errorMsg = "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ";
-                    break;
+                case error.PERMISSION_DENIED: errorMsg = "ปฏิเสธการขอเข้าถึงตำแหน่ง"; break;
+                case error.POSITION_UNAVAILABLE: errorMsg = "ไม่พบสัญญาณ GPS"; break;
+                case error.TIMEOUT: errorMsg = "หมดเวลาค้นหา"; break;
+                default: errorMsg = "เกิดข้อผิดพลาด"; break;
             }
-            
-            statusText.innerText = errorMsg + " (จะใช้ข้อมูลค่าเริ่มต้น)";
+            statusText.innerText = errorMsg + " (ใช้ค่าเริ่มต้น)";
             statusText.style.color = "#d32f2f";
         }
 
@@ -428,24 +401,17 @@
                 .then(response => response.json())
                 .then(data => {
                     const address = data.address;
-                    const city = address.city || address.town || address.district || "";
-                    
-                    if (city) {
-                        LOCATION_NAME = `${city}`;
-                    } else {
-                        LOCATION_NAME = "ตำแหน่งของคุณ";
-                    }
-
+                    const city = address.city || address.town || address.district || "ตำแหน่งของคุณ";
+                    LOCATION_NAME = city;
                     updateLocationText(LOCATION_NAME);
                     document.getElementById('geo-status').innerText = "อัปเดตพิกัดสำเร็จ!";
                     document.getElementById('geo-status').style.color = "#00796b";
                 })
                 .catch(err => {
-                    updateLocationText("ตำแหน่ง GPS ของคุณ");
+                    updateLocationText("ตำแหน่งของคุณ");
                 });
         }
 
-        // --- 2. UI Updates ---
         function updateLocationText(name) {
             document.getElementById('loc-pm25').innerText = name;
             document.getElementById('loc-weather').innerText = name;
@@ -453,152 +419,79 @@
         }
 
         function setMockData() {
-            updateUI({
-                pm25: 32,
-                temp: 29.5,
-                uv: 6.5
-            });
+            updatePM25(32);
+            updateTemp(29.5);
+            updateUV(6.5);
         }
 
-        function updateUI(data) {
-            document.getElementById('val-pm25').innerText = data.pm25;
-            document.getElementById('val-temp').innerText = data.temp;
-            document.getElementById('val-uv').innerText = data.uv;
-
-            // PM2.5 Logic
-            if(data.pm25 > 50) {
-                document.getElementById('badge-pm25').style.background = '#ef5350'; 
-                document.getElementById('badge-pm25').innerText = 'แย่';
-                document.getElementById('adv-pm25').innerText = 'ควรสวมหน้ากากอนามัย หลีกเลี่ยงกิจกรรมกลางแจ้ง';
-            } else {
-                document.getElementById('badge-pm25').style.background = '#66bb6a'; 
-                document.getElementById('badge-pm25').innerText = 'ดี';
-                document.getElementById('adv-pm25').innerText = 'อากาศดี สามารถออกกิจกรรมได้ปกติ';
-            }
-
-            // Temp Logic
-            if(data.temp > 35) {
-                document.getElementById('badge-temp').style.background = '#ef5350'; 
-                document.getElementById('badge-temp').innerText = 'ร้อนจัด';
-            } else {
-                document.getElementById('badge-temp').style.background = '#42a5f5'; 
-                document.getElementById('badge-temp').innerText = 'ปกติ';
-            }
+        function updatePM25(val) {
+            document.getElementById('val-pm25').innerText = val;
+            const badge = document.getElementById('badge-pm25');
+            if(val > 50) { badge.style.background = '#ef5350'; badge.innerText = 'แย่'; } 
+            else { badge.style.background = '#66bb6a'; badge.innerText = 'ดี'; }
         }
 
-        // --- 3. Independent Fetching (แก้ปัญหาอันแรกขึ้นอันอื่นไม่ขึ้น) ---
+        function updateTemp(val) {
+            document.getElementById('val-temp').innerText = val;
+            const badge = document.getElementById('badge-temp');
+            if(val > 35) { badge.style.background = '#ef5350'; badge.innerText = 'ร้อนจัด'; } 
+            else { badge.style.background = '#42a5f5'; badge.innerText = 'ปกติ'; }
+        }
+
+        function updateUV(val) {
+            document.getElementById('val-uv').innerText = val;
+            const badge = document.getElementById('badge-uv');
+            if(val >= 8) { badge.style.background = '#ef5350'; badge.innerText = 'สูงมาก'; } 
+            else { badge.style.background = '#ffa726'; badge.innerText = 'ปานกลาง'; }
+        }
+
         async function fetchRealData() {
-            // ดึงข้อมูลทั้ง 3 อย่างแบบอิสระ (ไม่ให้ตัวไหนไปกระทบตัวอื่น)
             fetchAQI(LAT, LON);
             fetchWeather(LAT, LON);
             fetchUV(LAT, LON);
         }
 
-        // ฟังก์ชันดึง PM2.5 แยก
         async function fetchAQI(lat, lon) {
-            const statusEl = document.getElementById('status-pm25');
-            statusEl.innerText = "กำลังดึงข้อมูลจาก WAQI...";
-            statusEl.className = "sys-status";
-
             try {
                 const res = await fetch(`https://api.waqi.info/feed/geo/${lat};${lon}/?token=guest`);
                 const data = await res.json();
-                
                 if(data.status === 'ok' && data.data.iaqi.pm25) {
-                    const pm25 = data.data.iaqi.pm25.v;
-                    document.getElementById('val-pm25').innerText = pm25;
-                    
-                    // Update Badge Logic
-                    if(pm25 > 50) {
-                        document.getElementById('badge-pm25').style.background = '#ef5350'; 
-                        document.getElementById('badge-pm25').innerText = 'แย่';
-                        document.getElementById('adv-pm25').innerText = 'ควรสวมหน้ากากอนามัย หลีกเลี่ยงกิจกรรมกลางแจ้ง';
-                    } else {
-                        document.getElementById('badge-pm25').style.background = '#66bb6a'; 
-                        document.getElementById('badge-pm25').innerText = 'ดี';
-                        document.getElementById('adv-pm25').innerText = 'อากาศดี สามารถออกกิจกรรมได้ปกติ';
-                    }
-
-                    statusEl.innerText = "อัปเดตเรียบร้อย";
-                    statusEl.className = "sys-status success";
-                } else {
-                    throw new Error("Data Format Error");
+                    updatePM25(data.data.iaqi.pm25.v);
                 }
-            } catch (e) {
-                console.error("AQI Error:", e);
-                statusEl.innerText = "ดึงข้อมูลไม่สำเร็จ (ใช้ค่าสำรอง)";
-                statusEl.className = "sys-status error";
-            }
+            } catch (e) { console.log("AQI Error"); }
         }
 
-        // ฟังก์ชันดึงอุณหภูมิแยก
         async function fetchWeather(lat, lon) {
-            const statusEl = document.getElementById('status-temp');
-            statusEl.innerText = "กำลังดึงข้อมูลจาก Open-Meteo...";
-            statusEl.className = "sys-status";
-
             try {
                 const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
                 const data = await res.json();
-                
                 if(data.current_weather) {
-                    const temp = data.current_weather.temperature;
-                    document.getElementById('val-temp').innerText = temp;
-                    
-                    if(temp > 35) {
-                        document.getElementById('badge-temp').style.background = '#ef5350'; 
-                        document.getElementById('badge-temp').innerText = 'ร้อนจัด';
-                    } else {
-                        document.getElementById('badge-temp').style.background = '#42a5f5'; 
-                        document.getElementById('badge-temp').innerText = 'ปกติ';
-                    }
-
-                    statusEl.innerText = "อัปเดตเรียบร้อย";
-                    statusEl.className = "sys-status success";
-                } else {
-                    throw new Error("Data Format Error");
+                    updateTemp(data.current_weather.temperature);
                 }
-            } catch (e) {
-                console.error("Weather Error:", e);
-                statusEl.innerText = "ดึงข้อมูลไม่สำเร็จ (ใช้ค่าสำรอง)";
-                statusEl.className = "sys-status error";
-            }
+            } catch (e) { console.log("Weather Error"); }
         }
 
-        // ฟังก์ชันดึง UV แยก
+        // --- แก้บัคดัชนี UV ---
         async function fetchUV(lat, lon) {
-            const statusEl = document.getElementById('status-uv');
-            statusEl.innerText = "กำลังดึงข้อมูลจาก Open-Meteo...";
-            statusEl.className = "sys-status";
-
             try {
+                // ใช้ API ของ Open-Meteo ที่เชื่อถือได้
                 const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=uv_index`);
                 const data = await res.json();
-                
-                if(data.current && data.current.uv_index !== undefined) {
-                    const uv = data.current.uv_index;
-                    document.getElementById('val-uv').innerText = uv;
-                    
-                    if(uv >= 8) {
-                        document.getElementById('badge-uv').style.background = '#ef5350'; 
-                        document.getElementById('badge-uv').innerText = 'สูงมาก';
-                    } else {
-                        document.getElementById('badge-uv').style.background = '#ffa726'; 
-                        document.getElementById('badge-uv').innerText = 'ปานกลาง';
-                    }
 
-                    statusEl.innerText = "อัปเดตเรียบร้อย";
-                    statusEl.className = "sys-status success";
+                if (data && data.current && data.current.uv_index !== undefined) {
+                    // อัปเดตค่าจริง
+                    updateUV(data.current.uv_index);
                 } else {
-                    throw new Error("Data Format Error");
+                    // ถ้าไม่มีข้อมูลลงในช่อง 'current' (เกรง API เปลี่ยนรูปแบบ) ให้ลองเอาจาก hourly ชั่วโมงแรกสุด
+                    if (data.hourly && data.hourly.uv_index && data.hourly.uv_index[0] !== undefined) {
+                        updateUV(data.hourly.uv_index[0]);
+                    }
                 }
             } catch (e) {
-                console.error("UV Error:", e);
-                statusEl.innerText = "ดึงข้อมูลไม่สำเร็จ (ใช้ค่าสำรอง)";
-                statusEl.className = "sys-status error";
+                console.log("UV Error:", e);
+                // ถ้า Error จริงๆ ก็คงค่า Mock ไว้
             }
         }
-
     </script>
 </body>
 </html>
