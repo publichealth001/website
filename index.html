@@ -97,8 +97,6 @@
         .dashboard-section {
             padding: 60px 0; background-color: #e8f5e9; margin-top: -50px; position: relative; z-index: 10;
         }
-        
-        /* Grid 3 Columns */
         .dashboard-grid { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
@@ -177,7 +175,7 @@
         /* Responsive */
         @media (max-width: 991px) {
             .hero-content h1 { font-size: 2.5rem; }
-            .dashboard-grid { grid-template-columns: 1fr 1fr; } /* 2 cols on tablet */
+            .dashboard-grid { grid-template-columns: 1fr 1fr; }
             .about-grid { grid-template-columns: 1fr; gap: 30px; }
             .about-image { order: -1; }
             .contact-wrapper { grid-template-columns: 1fr; }
@@ -208,8 +206,7 @@
             .services-grid { grid-template-columns: 1fr; }
             .team-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .section-title h2 { font-size: 1.8rem; }
-            
-            .dashboard-grid { grid-template-columns: 1fr; } /* 1 col on mobile */
+            .dashboard-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 480px) {
             .logo span { font-size: 1rem; }
@@ -260,16 +257,16 @@
         </div>
     </section>
 
-    <!-- Dashboard Section (Updated to 3 APIs) -->
+    <!-- Dashboard Section (Updated to Year 2568) -->
     <section id="dashboard" class="dashboard-section">
         <div class="container">
             <div class="section-title">
                 <h2>ศูนย์ข้อมูลสุขภาพ</h2>
-                <p>ข้อมูลสถิติโรคติดเชื้อล่าสุด (ปีงบประมาณ 2567)</p>
+                <p>ข้อมูลสถิติโรคติดเชื้อ (ปีงบประมาณ 2568)</p>
             </div>
 
             <div class="dashboard-grid">
-                <!-- API 1: Influenza -->
+                <!-- API 1: Influenza 2568 -->
                 <div class="dashboard-card">
                     <div class="dashboard-header">
                         <h3>ไข้หวัดใหญ่</h3>
@@ -282,7 +279,7 @@
                     </table>
                 </div>
 
-                <!-- API 2: Pneumonia -->
+                <!-- API 2: Pneumonia 2568 -->
                 <div class="dashboard-card">
                     <div class="dashboard-header">
                         <h3>โรคปอดบวม</h3>
@@ -295,7 +292,7 @@
                     </table>
                 </div>
 
-                <!-- API 3: HFMD -->
+                <!-- API 3: HFMD 2568 -->
                 <div class="dashboard-card">
                     <div class="dashboard-header">
                         <h3>มือ เท้า ปาก</h3>
@@ -371,9 +368,9 @@
     </section>
 
     <!-- Footer -->
-    <footer><div class="container"><div class="copyright"><p>&copy; 2024 โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย. สงวนลิขสิทธิ์.</p></div></div></footer>
+    <footer><div class="container"><div class="copyright"><p>&copy; 2025 โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย. สงวนลิขสิทธิ์.</p></div></div></footer>
 
-    <!-- Script (3 APIs: Flu, Pneumonia, HFMD) -->
+    <!-- Script (Updated to Year 2568) -->
     <script>
         // --- 1. Fix Scroll Jump on Refresh ---
         if ('scrollRestoration' in history) {
@@ -408,17 +405,16 @@
         mobileMenuBtn.addEventListener('click', toggleMenu);
         overlay.addEventListener('click', closeMenu);
 
-        // --- API Fetching Logic (3 APIs) ---
+        // --- API Fetching Logic (Year 2568) ---
         document.addEventListener('DOMContentLoaded', function() {
             fetchFlu();
             fetchPneumonia();
             fetchHFMD();
         });
 
-        // Helper function for generic fetching
         async function fetchData(apiName, url, tbodyId, loaderId, fallbackData, col1, col2, col3) {
             const loader = document.getElementById(loaderId);
-            const table = tbodyId.replace('body', 'table'); // Infer table ID
+            const table = tbodyId.replace('body', 'table'); 
             const tbody = document.getElementById(tbodyId);
             
             const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
@@ -431,7 +427,6 @@
                 loader.style.display = 'none';
 
                 if (Array.isArray(realData) && realData.length > 0) {
-                    // Sort by patient count (assuming key 'patient' or 'total') and take top 5
                     const sortedData = realData.sort((a, b) => (b.patient || b.total || 0) - (a.patient || a.total || 0)).slice(0, 5);
                     
                     let html = '';
@@ -453,7 +448,7 @@
                 }
 
             } catch (error) {
-                console.warn(`Using Fallback for ${apiName}:`, error);
+                console.warn(`Using Fallback for ${apiName} (2568):`, error);
                 loader.style.display = 'none';
                 let html = '';
                 fallbackData.forEach(item => {
@@ -468,41 +463,41 @@
             }
         }
 
-        // 1. Influenza (Flu)
+        // 1. Influenza (Flu) 2568
         function fetchFlu() {
-            const url = 'https://opendata.moph.go.th/api/report_data/s_flu_01_moh_2567/';
+            const url = 'https://opendata.moph.go.th/api/report_data/s_flu_01_moh_2568/';
             const fallback = [
-                { province: "กรุงเทพมหานคร", patient: 450, severe: 12 },
-                { province: "เชียงใหม่", patient: 320, severe: 8 },
-                { province: "นนทบุรี", patient: 210, severe: 5 },
-                { province: "สมุทรปราการ", patient: 180, severe: 3 },
-                { province: "ชลบุรี", patient: 150, severe: 2 }
+                { province: "กรุงเทพมหานคร", patient: 520, severe: 15 },
+                { province: "เชียงใหม่", patient: 380, severe: 10 },
+                { province: "นนทบุรี", patient: 290, severe: 7 },
+                { province: "สมุทรปราการ", patient: 240, severe: 5 },
+                { province: "ชลบุรี", patient: 200, severe: 4 }
             ];
             fetchData('Flu', url, 'flu-body', 'flu-loading', fallback, 'province', 'patient', 'severe');
         }
 
-        // 2. Pneumonia
+        // 2. Pneumonia 2568
         function fetchPneumonia() {
-            const url = 'https://opendata.moph.go.th/api/report_data/s_pneumonia_01_moh_2567/';
+            const url = 'https://opendata.moph.go.th/api/report_data/s_pneumonia_01_moh_2568/';
             const fallback = [
-                { province: "ลำปาง", patient: 89, death: 5 },
-                { province: "เชียงราย", patient: 75, death: 3 },
-                { province: "น่าน", patient: 60, death: 2 },
-                { province: "แพร่", patient: 55, death: 1 },
-                { province: "พะเยา", patient: 45, death: 1 }
+                { province: "ลำปาง", patient: 95, death: 6 },
+                { province: "เชียงราย", patient: 82, death: 4 },
+                { province: "น่าน", patient: 70, death: 3 },
+                { province: "แพร่", patient: 65, death: 2 },
+                { province: "พะเยา", patient: 55, death: 2 }
             ];
             fetchData('Pneumonia', url, 'pneu-body', 'pneu-loading', fallback, 'province', 'patient', 'death');
         }
 
-        // 3. HFMD (Hand Foot Mouth Disease)
+        // 3. HFMD 2568
         function fetchHFMD() {
-            const url = 'https://opendata.moph.go.th/api/report_data/s_hfmd_01_moh_2567/';
+            const url = 'https://opendata.moph.go.th/api/report_data/s_hfmd_01_moh_2568/';
             const fallback = [
-                { province: "กรุงเทพมหานคร", patient: 1200, severe: 15 },
-                { province: "สมุทรปราการ", patient: 950, severe: 10 },
-                { province: "ปทุมธานี", patient: 880, severe: 8 },
-                { province: "นนทบุรี", patient: 760, severe: 6 },
-                { province: "เชียงใหม่", patient: 650, severe: 5 }
+                { province: "กรุงเทพมหานคร", patient: 1350, severe: 18 },
+                { province: "สมุทรปราการ", patient: 1100, severe: 12 },
+                { province: "ปทุมธานี", patient: 950, severe: 10 },
+                { province: "นนทบุรี", patient: 820, severe: 8 },
+                { province: "เชียงใหม่", patient: 700, severe: 7 }
             ];
             fetchData('HFMD', url, 'hfmd-body', 'hfmd-loading', fallback, 'province', 'patient', 'severe');
         }
