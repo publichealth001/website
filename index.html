@@ -16,6 +16,7 @@
             --primary-dark: #004d40;
             --primary-light: #e0f2f1;
             --accent-color: #ff6f00;
+            --refresh-color: #2196F3; /* สีปุ่มรีเฟรชใหม่ */
             --text-main: #333;
             --text-light: #555;
             --bg-body: #f8f9fa;
@@ -65,15 +66,20 @@
         /* --- 1. API Dashboard --- */
         .dashboard-section { background-color: white; margin-top: -40px; position: relative; z-index: 10; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: var(--radius); padding: 40px; }
         
-        .location-control { text-align: center; margin-bottom: 25px; }
-        .btn-location {
-            background: var(--accent-color); color: white; border: none; padding: 12px 30px;
+        .location-control { text-align: center; margin-bottom: 25px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        
+        /* ปุ่มทั่วไป */
+        .btn-action {
+            color: white; border: none; padding: 12px 30px;
             border-radius: 50px; font-size: 1rem; font-family: 'Sarabun', sans-serif; font-weight: 600;
-            cursor: pointer; box-shadow: 0 4px 12px rgba(255, 111, 0, 0.3);
+            cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;
-            width: 100%; max-width: 300px; justify-content: center;
+            width: 100%; max-width: 250px; justify-content: center;
         }
-        .btn-location:active { transform: scale(0.95); }
+        .btn-action:active { transform: scale(0.95); }
+
+        .btn-location { background: var(--accent-color); }
+        .btn-refresh { background: var(--refresh-color); }
 
         .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
         .env-card { background: #f8f9fa; padding: 25px; border-radius: 12px; border: 1px solid #eee; transition: 0.3s; border-top: 5px solid transparent; text-align: center; }
@@ -160,12 +166,15 @@
     <div class="container">
         <div class="dashboard-section">
             <div class="location-control">
-                <button class="btn-location" onclick="getMyLocation()">
+                <!-- ปุ่มรีเฟรชใหม่ -->
+                <button class="btn-action btn-refresh" onclick="refreshData()">
+                    <i class="fas fa-sync-alt"></i> รีเฟรชข้อมูล
+                </button>
+
+                <!-- ปุ่มหาตำแหน่ง -->
+                <button class="btn-action btn-location" onclick="getMyLocation()">
                     <i class="fas fa-crosshairs"></i> ใช้ตำแหน่งปัจจุบัน
                 </button>
-                <p id="geo-status" style="font-size:0.85rem; color:#888; margin-top:5px;">
-                    *ขณะนี้แสดงข้อมูลของกรุงเทพฯ (ค่าเริ่มต้น)
-                </p>
             </div>
 
             <div class="dashboard-grid">
@@ -178,7 +187,7 @@
                         <span class="data-value" id="val-pm25">--</span><span class="data-unit">µg/m³</span>
                     </div>
                     <div class="location-badge">
-                        <i class="fas fa-map-marker-alt"></i> <span id="loc-pm25">กรุงเทพฯ</span>
+                        <i class="fas fa-map-marker-alt"></i> <span id="loc-pm25">รอข้อมูล...</span>
                     </div>
                     <div class="status-badge" id="badge-pm25" style="background:#ccc;">--</div>
                 </div>
@@ -192,7 +201,7 @@
                         <span class="data-value" id="val-temp">--</span><span class="data-unit">°C</span>
                     </div>
                     <div class="location-badge">
-                        <i class="fas fa-map-marker-alt"></i> <span id="loc-weather">กรุงเทพฯ</span>
+                        <i class="fas fa-map-marker-alt"></i> <span id="loc-weather">รอข้อมูล...</span>
                     </div>
                     <div class="status-badge" id="badge-temp" style="background:#ccc;">--</div>
                 </div>
@@ -206,7 +215,7 @@
                         <span class="data-value" id="val-uv">--</span><span class="data-unit">Index</span>
                     </div>
                     <div class="location-badge">
-                        <i class="fas fa-map-marker-alt"></i> <span id="loc-uv">กรุงเทพฯ</span>
+                        <i class="fas fa-map-marker-alt"></i> <span id="loc-uv">รอข้อมูล...</span>
                     </div>
                     <div class="status-badge" id="badge-uv" style="background:#ccc;">--</div>
                 </div>
@@ -345,26 +354,44 @@
         <p>&copy; 2023 โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย | สำนักงานสาธารณสุขจังหวัด</p>
     </footer>
 
-    <!-- Javascript (Full Hierarchy Logic) -->
+    <!-- Javascript (Manual Refresh Mode) -->
     <script>
         // --- Configuration ---
         let LAT = 13.7563; 
         let LON = 100.5018;
-        let LOCATION_NAME = "กรุงเทพฯ";
+        let LOCATION_NAME = "กรุงเทพฯ (ค่าเริ่มต้น)";
 
         document.addEventListener('DOMContentLoaded', () => {
+            // !!! เปลี่ยนแปลง: เมื่อเปิดหน้าเว็บ ให้แสดงแค่ค่าจำลอง (Mock Data) !!!
             setMockData(); 
-            fetchRealData();
+            // !!! ลบ fetchRealData() ออกจากตรงนี้ !!!
         });
 
-        // --- 1. Geolocation Logic ---
+        // --- 1. ฟังก์ชันรีเฟรชข้อมูลใหม่ (ปุ่มใหม่) ---
+        function refreshData() {
+            // เปลี่ยนข้อความให้รู้ว่ากำลังดึงข้อมูล
+            const statusText = document.getElementById('geo-status'); // ใช้ตัวแปร geo-status แสดงผลรีเฟรชก็ได้
+            if(statusText) {
+                statusText.innerText = "กำลังอัปเดทค่าข้อมูล...";
+                statusText.style.color = "#2196F3";
+            }
+            
+            // เรียกใช้ fetchRealData ตามพิกัดปัจจุบัน
+            fetchRealData();
+
+            // หาชื่อสถานที่ (ถ้ายังไม่ได้ทำมาก่อน)
+            if(LOCATION_NAME.includes("ค่าเริ่มต้น")) {
+                getLocationName(LAT, LON);
+            }
+        }
+
+        // --- 2. Geolocation Logic ---
         function getMyLocation() {
             const statusText = document.getElementById('geo-status');
             statusText.innerText = "กำลังค้นหาตำแหน่ง...";
             statusText.style.color = "#ff6f00";
 
             if (navigator.geolocation) {
-                // ใช้ค่าตั้งที่เร็วและไม่ต้องการความแม่นยำเกินไป เพื่อความรวดเร็ว
                 navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {
                     enableHighAccuracy: false, 
                     timeout: 10000,
@@ -378,8 +405,12 @@
         function successCallback(position) {
             LAT = position.coords.latitude;
             LON = position.coords.longitude;
+            
+            // หาชื่อสถานที่
             getLocationName(LAT, LON);
-            fetchRealData();
+            
+            // !!! เมื่อหาตำแหน่งเสร็จ ให้รีเฟรชข้อมูลทันที !!!
+            refreshData(); 
         }
 
         function errorCallback(error) {
@@ -403,10 +434,8 @@
             
             statusText.innerText = errorMsg;
             statusText.style.color = "#d32f2f";
-            fetchRealData();
         }
 
-        // --- 2. Logic แปลงพิกัดเป็นชื่อที่อยู่แบบเต็มรูปแบบ (จังหวัด/อำเภอ/ตำบล) ---
         function getLocationName(lat, lon) {
             fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)}`)
                 .then(response => response.json())
@@ -414,41 +443,27 @@
                     const data = JSON.parse(proxyData.contents);
                     const address = data.address;
                     
-                    // 1. ดึงชื่อตำบล (Tambon) - OSM ใช้ key "town" หรือ "suburb"
-                    let tambon = address.town || address.suburb || address.village;
-                    
-                    // 2. ดึงชื่ออำเภอ (Amphoe) - OSM ใช้ key "city_district"
-                    let amphoe = address.city_district || address.district;
-                    
-                    // 3. ดึงชื่อจังหวัด (Changwat) - OSM ใช้ key "state"
-                    let changwat = address.state || address.province;
+                    // Logic การหาชื่อที่อยู่แบบเต็ม (ตำบล อำเภอ จังหวัด)
+                    let tambon = address.town || address.suburb || address.village || "";
+                    let amphoe = address.city_district || address.district || "";
+                    let changwat = address.state || "";
 
+                    // ลบคำนำหน้า Ban/บ้าน ออกเพื่อความสะอาด
+                    let cleanTambon = tambon.replace(/^Ban |^บ้าน /i, "");
+                    
                     let finalName = "";
+                    if (cleanTambon) finalName += cleanTambon;
+                    if (amphoe) finalName += " อำเภอ " + amphoe;
+                    if (changwat) finalName += " จังหวัด " + changwat;
 
-                    // ต่อข้อความ
-                    if (tambon) {
-                        // ลบคำนำหน้า "Ban" หรือ "บ้าน" ออกเพื่อความสะอาด (เช่น Ban Klong Noi -> Klong Noi)
-                        let cleanTambon = tambon.replace(/^Ban |^บ้าน /, "");
-                        finalName = cleanTambon;
-                    }
-
-                    if (amphoe) {
-                        finalName += " อำเภอ " + amphoe;
-                    }
-
-                    if (changwat) {
-                        finalName += " จังหวัด " + changwat;
-                    }
-
-                    // ถ้าไม่เจอข้อมูลให้ใช้ค่าเริ่มต้น
-                    if (finalName.length < 3) {
-                        finalName = "ตำแหน่งของคุณ";
-                    }
+                    if (finalName === "") finalName = "ตำแหน่งของคุณ";
 
                     LOCATION_NAME = finalName;
                     updateLocationText(LOCATION_NAME);
-                    document.getElementById('geo-status').innerText = "อัปเดตพิกัดสำเร็จ!";
-                    document.getElementById('geo-status').style.color = "#00796b";
+                    
+                    const statusText = document.getElementById('geo-status');
+                    statusText.innerText = "อัปเดตพิกัดสำเร็จ!";
+                    statusText.style.color = "#00796b";
 
                 })
                 .catch(err => {
@@ -457,6 +472,7 @@
                 });
         }
 
+        // --- UI Updates ---
         function updateLocationText(name) {
             document.getElementById('loc-pm25').innerText = name;
             document.getElementById('loc-weather').innerText = name;
@@ -467,6 +483,8 @@
             updatePM25(32);
             updateTemp(29.5);
             updateUV(6.5);
+            // ตั้งชื่อเริ่มต้นเมื่อเปิดหน้าจอ
+            updateLocationText(LOCATION_NAME);
         }
 
         function updatePM25(val) {
