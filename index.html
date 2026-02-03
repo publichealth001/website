@@ -2,7 +2,6 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport สำคัญมากสำหรับการทำ Responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย - อ.บ้านแพรก จ.พระนครศรีอยุธยา</title>
     
@@ -45,7 +44,7 @@
             color: var(--text-color);
             line-height: 1.6;
             background-color: var(--bg-light);
-            overflow-x: hidden; /* ป้องกันการเลื่อนแนวนอน */
+            overflow-x: hidden;
         }
 
         a { text-decoration: none; color: inherit; }
@@ -62,7 +61,7 @@
 
         .section-title {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             padding: 0 10px;
         }
 
@@ -151,7 +150,6 @@
 
         .logo i { font-size: 1.8rem; color: var(--primary-color); }
 
-        /* Desktop Nav */
         .nav-links {
             display: flex;
             gap: 30px;
@@ -209,7 +207,7 @@
             background: linear-gradient(rgba(0, 95, 86, 0.85), rgba(0, 95, 86, 0.7)), url('https://picsum.photos/seed/hospitalayutthaya/1920/1080');
             background-size: cover;
             background-position: center;
-            min-height: 80vh; /* ปรับความสูง */
+            min-height: 80vh;
             display: flex;
             align-items: center;
             text-align: center;
@@ -237,15 +235,83 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            flex-wrap: wrap; /* ป้องกันปุ่มเลยเส้น */
+            flex-wrap: wrap;
         }
 
-        /* --- Services --- */
+        /* --- Dashboard Section (Moved Up) --- */
+        .dashboard-section {
+            padding: 60px 0;
+            background-color: #e8f5e9; /* สีเขียวอ่อนๆ แยกส่วน */
+            margin-top: -50px; /* ทำให้ทับซ้อน Hero นิดหน่อยเพื่อความทันสมัย */
+            position: relative;
+            z-index: 10;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .dashboard-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            overflow: hidden;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .dashboard-header h3 {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+        }
+
+        .dashboard-header i {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+        }
+
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .api-table th, .api-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .api-table th {
+            background-color: #f9f9f9;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .api-table tr:hover { background-color: #f0f4f4; }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+        }
+
+        /* --- Services Section --- */
         .services { padding: 80px 0; }
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* ปรับขนาดการ์ด */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
 
@@ -362,7 +428,7 @@
         .contact-wrapper {
             display: grid;
             grid-template-columns: 1fr 1.5fr;
-            gap: 0; /* ปิดร่องเพื่อให้ดูเหมือนการ์ดเดียว */
+            gap: 0;
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow);
@@ -402,79 +468,34 @@
         footer {
             background-color: #263238;
             color: #eceff1;
-            padding: 60px 0 20px;
+            padding: 30px 0;
+            margin-top: 0;
         }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-col h4 {
-            color: var(--white);
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-        }
-
-        .footer-links li { margin-bottom: 10px; }
-        
-        .footer-links a {
-            color: #b0bec5;
-            transition: 0.3s;
-            display: inline-block;
-        }
-
-        .footer-links a:hover { color: var(--primary-color); padding-left: 5px; }
-
-        .social-links { display: flex; gap: 15px; margin-top: 20px; }
-
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: 0.3s;
-        }
-
-        .social-links a:hover { background-color: var(--primary-color); }
 
         .copyright {
             text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
             color: #78909c;
             font-size: 0.9rem;
         }
 
-        /* =========================================
-           RESPONSIVE MEDIA QUERIES (ส่วนสำคัญ)
-           ========================================= */
-
-        /* 1. Tablets & Small Laptops (เริ่มตั้งแต่หน้าจอเล็กกว่า 992px) */
+        /* Responsive */
         @media (max-width: 991px) {
             .hero-content h1 { font-size: 2.5rem; }
+            .dashboard-grid { grid-template-columns: 1fr; }
             .about-grid { grid-template-columns: 1fr; gap: 30px; }
-            .about-image { order: -1; } /* รูปขึ้นก่อน */
+            .about-image { order: -1; }
             .contact-wrapper { grid-template-columns: 1fr; }
             .map-frame { min-height: 350px; }
         }
 
-        /* 2. Mobile Devices (หน้าจอเล็กกว่า 768px) */
         @media (max-width: 768px) {
             .navbar { height: 70px; }
-
-            /* Mobile Menu Styling */
             .mobile-menu-btn { display: block; }
 
             .nav-links {
                 position: fixed;
                 top: 0;
-                right: -100%; /* ซ่อนอยู่ด้านขวา */
+                right: -100%;
                 width: 280px;
                 height: 100vh;
                 background-color: var(--white);
@@ -487,68 +508,42 @@
                 z-index: 1001;
             }
 
-            .nav-links.active {
-                right: 0; /* เลื่อนเข้ามา */
-            }
-
-            .nav-links a {
-                font-size: 1.2rem;
-                padding: 15px;
-                width: 100%;
-                text-align: center;
-            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 1.2rem; padding: 15px; width: 100%; text-align: center; }
             
-            /* Overlay เมื่อเปิดเมนู */
             .overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.5);
-                z-index: 1000;
-                display: none;
-                opacity: 0;
-                transition: opacity 0.3s;
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.5); z-index: 1000;
+                display: none; opacity: 0; transition: opacity 0.3s;
             }
-            
-            .overlay.active {
-                display: block;
-                opacity: 1;
-            }
+            .overlay.active { display: block; opacity: 1; }
+            .emergency-btn { display: none; }
 
-            .emergency-btn {
-                display: none; /* ซ่อนใน Navbar บนมือถือ (อาจจะย้ายไปในเมนูแทน) */
-            }
-
-            /* Hero Adjustments */
             .hero { padding: 120px 0 60px; }
             .hero-content h1 { font-size: 2rem; }
             .hero-content p { font-size: 1rem; padding: 0 10px; }
             .hero-buttons { flex-direction: column; width: 80%; margin: 0 auto; }
             .btn { width: 100%; text-align: center; }
 
-            /* Grid Adjustments */
-            .services-grid { grid-template-columns: 1fr; } /* เรียง 1 คอลัมน์ */
-            .team-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; } /* 2 คอลัมน์ */
-            
+            .services-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .section-title h2 { font-size: 1.8rem; }
         }
 
-        /* 3. Very Small Mobile (หน้าจอเล็กกว่า 480px เช่น iPhone SE) */
         @media (max-width: 480px) {
-            .logo span { font-size: 1rem; } /* ย่อชื่อโลโก้ */
-            .team-grid { grid-template-columns: 1fr; } /* เรียง 1 คอลัมน์ */
+            .logo span { font-size: 1rem; }
+            .team-grid { grid-template-columns: 1fr; }
             .service-card, .contact-info { padding: 25px 20px; }
             .contact-info h3 { font-size: 1.5rem; }
             .hero { min-height: 70vh; }
+            .api-table th, .api-table td { font-size: 0.8rem; padding: 8px; }
         }
 
     </style>
 </head>
 <body>
 
-    <!-- Overlay สำหรับปิดเมนูมือถือ -->
+    <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
 
     <!-- Header -->
@@ -561,6 +556,7 @@
             
             <nav class="nav-links" id="navLinks">
                 <a href="#home" class="active" onclick="closeMenu()">หน้าแรก</a>
+                <a href="#dashboard" onclick="closeMenu()">ข้อมูลสุขภาพ</a>
                 <a href="#services" onclick="closeMenu()">บริการ</a>
                 <a href="#about" onclick="closeMenu()">เกี่ยวกับเรา</a>
                 <a href="#team" onclick="closeMenu()">บุคลากร</a>
@@ -586,6 +582,65 @@
             <div class="hero-buttons">
                 <a href="#contact" class="btn btn-primary">ติดต่อเรา</a>
                 <a href="#services" class="btn btn-outline">บริการของเรา</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section (New: Moved Above Services) -->
+    <section id="dashboard" class="dashboard-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>ศูนย์ข้อมูลสุขภาพ</h2>
+                <p>ข้อมูลสถิติสาธารณสุขล่าสุดจากกระทรวงสาธารณสุข</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- API 1: Dengue Stats -->
+                <div class="dashboard-card">
+                    <div class="dashboard-header">
+                        <h3>สถิติโรคไข้เลือดออก (2566)</h3>
+                        <i class="fa-solid fa-mosquito"></i>
+                    </div>
+                    <div id="dengue-loading" class="loading-spinner">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i> กำลังโหลดข้อมูล...
+                    </div>
+                    <div id="dengue-error" style="display:none; color: red; text-align:center;">ไม่สามารถดึงข้อมูลได้</div>
+                    <table class="api-table" id="dengue-table" style="display:none;">
+                        <thead>
+                            <tr>
+                                <th>จังหวัด</th>
+                                <th>ผู้ป่วย</th>
+                                <th>เสียชีวิต</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dengue-body">
+                            <!-- Data Injected Here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- API 2: Hospital List -->
+                <div class="dashboard-card">
+                    <div class="dashboard-header">
+                        <h3>รายชื่อโรงพยาบาล</h3>
+                        <i class="fa-solid fa-hospital"></i>
+                    </div>
+                    <div id="hospital-loading" class="loading-spinner">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i> กำลังโหลดข้อมูล...
+                    </div>
+                    <div id="hospital-error" style="display:none; color: red; text-align:center;">ไม่สามารถดึงข้อมูลได้</div>
+                    <table class="api-table" id="hospital-table" style="display:none;">
+                        <thead>
+                            <tr>
+                                <th>ชื่อโรงพยาบาล</th>
+                                <th>จังหวัด</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hospital-body">
+                            <!-- Data Injected Here -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </section>
@@ -744,39 +799,15 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>รพ.สต. คลองน้อย</h4>
-                    <p style="color: #b0bec5; font-size: 0.9rem;">ใส่ใจสุขภาพ ประชาชนเป็นที่หนึ่ง</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-line"></i></a>
-                    </div>
-                </div>
-                <div class="footer-col">
-                    <h4>ลิงก์ด่วน</h4>
-                    <ul class="footer-links">
-                        <li><a href="#home">หน้าแรก</a></li>
-                        <li><a href="#services">บริการ</a></li>
-                        <li><a href="#contact">ติดต่อเรา</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>บริการยอดนิยม</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">จองคิวออนไลน์</a></li>
-                        <li><a href="#">คลินิกโรคเรื้อรัง</a></li>
-                    </ul>
-                </div>
-            </div>
             <div class="copyright">
-                <p>&copy; 2023 รพ.สต. คลองน้อย อ.บ้านแพรก. All rights reserved.</p>
+                <p>&copy; 2023 โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย อำเภอบ้านแพรก จังหวัดพระนครศรีอยุธยา. สงวนลิขสิทธิ์.</p>
             </div>
         </div>
     </footer>
 
     <!-- Script -->
     <script>
+        // --- Mobile Menu Logic ---
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navLinks = document.getElementById('navLinks');
         const overlay = document.getElementById('overlay');
@@ -785,11 +816,10 @@
         function toggleMenu() {
             navLinks.classList.toggle('active');
             overlay.classList.toggle('active');
-            
             if (navLinks.classList.contains('active')) {
                 icon.classList.remove('fa-bars');
                 icon.classList.add('fa-xmark');
-                document.body.style.overflow = 'hidden'; // ห้ามเลื่อนหน้าจอเมื่อเปิดเมนู
+                document.body.style.overflow = 'hidden';
             } else {
                 icon.classList.remove('fa-xmark');
                 icon.classList.add('fa-bars');
@@ -807,6 +837,104 @@
 
         mobileMenuBtn.addEventListener('click', toggleMenu);
         overlay.addEventListener('click', closeMenu);
+
+        // --- API Fetching Logic (Dashboard) ---
+        document.addEventListener('DOMContentLoaded', async function() {
+            
+            // 1. Fetch Dengue Data
+            const dengueUrl = 'https://opendata.moph.go.th/api/report_data/s_dengue_01_moh_2566/';
+            fetchDengue(dengueUrl);
+
+            // 2. Fetch Hospital Data
+            const hospitalUrl = 'https://opendata.moph.go.th/api/report_data/s_hospital_01/';
+            fetchHospital(hospitalUrl);
+        });
+
+        async function fetchDengue(url) {
+            const loader = document.getElementById('dengue-loading');
+            const errorDiv = document.getElementById('dengue-error');
+            const table = document.getElementById('dengue-table');
+            const tbody = document.getElementById('dengue-body');
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                loader.style.display = 'none';
+
+                if (!data || data.length === 0) {
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+
+                // Sort by patient count descending and take top 5
+                const sortedData = data.sort((a, b) => (b.patient || 0) - (a.patient || 0)).slice(0, 5);
+
+                let html = '';
+                sortedData.forEach(item => {
+                    const province = item.province || '-';
+                    const patients = item.patient ? item.patient.toLocaleString() : '0';
+                    const deaths = item.death ? item.death.toLocaleString() : '0';
+                    
+                    html += `<tr>
+                        <td>${province}</td>
+                        <td style="text-align:right;">${patients}</td>
+                        <td style="text-align:right; color: ${deaths > 0 ? 'red' : 'inherit'}">${deaths}</td>
+                    </tr>`;
+                });
+
+                tbody.innerHTML = html;
+                table.style.display = 'table';
+
+            } catch (error) {
+                console.error('Dengue API Error:', error);
+                loader.style.display = 'none';
+                errorDiv.style.display = 'block';
+                errorDiv.innerText = 'เกิดข้อผิดพลาดในการเชื่อมต่อ API';
+            }
+        }
+
+        async function fetchHospital(url) {
+            const loader = document.getElementById('hospital-loading');
+            const errorDiv = document.getElementById('hospital-error');
+            const table = document.getElementById('hospital-table');
+            const tbody = document.getElementById('hospital-body');
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                loader.style.display = 'none';
+
+                if (!data || data.length === 0) {
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+
+                // Take first 10 hospitals
+                const displayData = data.slice(0, 10);
+
+                let html = '';
+                displayData.forEach(item => {
+                    const name = item.h_name || item.name || '-';
+                    const prov = item.province || '-';
+
+                    html += `<tr>
+                        <td>${name}</td>
+                        <td>${prov}</td>
+                    </tr>`;
+                });
+
+                tbody.innerHTML = html;
+                table.style.display = 'table';
+
+            } catch (error) {
+                console.error('Hospital API Error:', error);
+                loader.style.display = 'none';
+                errorDiv.style.display = 'block';
+                errorDiv.innerText = 'เกิดข้อผิดพลาดในการเชื่อมต่อ API';
+            }
+        }
     </script>
 </body>
 </html>
