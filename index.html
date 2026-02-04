@@ -164,7 +164,7 @@
             border-radius: 4px; font-size: 0.75rem; font-weight: 600;
         }
 
-        /* --- About Section Styling --- */
+        /* --- About Section --- */
         .about-box {
             background: #fff; padding: 30px; border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -198,6 +198,53 @@
         }
         .staff-card h3 { margin-top: 15px; color: var(--primary-color); font-size: 1.1rem; }
         .staff-card p { font-size: 0.85rem; color: #777; }
+
+        /* --- News Section (New) --- */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .news-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .news-card:hover { transform: translateY(-5px); }
+        .news-img {
+            width: 100%; height: 180px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+        .news-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .news-date {
+            font-size: 0.75rem; color: #999; margin-bottom: 8px;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .news-title {
+            font-size: 1rem; font-weight: 600; margin-bottom: 12px;
+            line-height: 1.4; color: var(--text-dark);
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .news-link {
+            margin-top: auto;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .news-link:hover { text-decoration: underline; }
 
         /* --- Contact --- */
         .contact-wrapper {
@@ -246,7 +293,7 @@
                     <li><a href="#hero">หน้าแรก</a></li>
                     <li><a href="#about">เกี่ยวกับเรา</a></li>
                     <li><a href="#services">บริการ</a></li>
-                    <li><a href="#staff">บุคลากร</a></li>
+                    <li><a href="#news">ข่าวสาร</a></li> <li><a href="#staff">บุคลากร</a></li>
                     <li><a href="#contact">ติดต่อเรา</a></li>
                 </ul>
             </nav>
@@ -258,7 +305,6 @@
             <div class="container">
                 <h1>โรงพยาบาลส่งเสริมสุขภาพ<br>ตำบลคลองน้อย</h1>
                 <p>หมู่ที่ 3 ตำบลคลองน้อย อำเภอบ้านแพรก จังหวัดพระนครศรีอยุธยา</p>
-                
                 <div class="hero-buttons">
                     <a href="#contact" class="btn btn-hero-contact">
                         <i class="fas fa-phone-alt"></i> ติดต่อเรา
@@ -392,7 +438,23 @@
             </div>
         </section>
 
-        <section id="staff" style="background-color: var(--light-bg);">
+        <section id="news" style="background-color: var(--light-bg);">
+            <div class="container">
+                <div class="section-title"><h2>ข่าวสารสุขภาพน่ารู้</h2></div>
+                
+                <div id="news-container" class="news-grid">
+                    <div style="text-align:center; grid-column: 1/-1; color:#777;">
+                        <i class="fas fa-spinner fa-spin"></i> กำลังโหลดข่าวสุขภาพ...
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <small style="color: #999;">ขอบคุณข้อมูลจาก: Sanook! Health</small>
+                </div>
+            </div>
+        </section>
+
+        <section id="staff" style="background-color: var(--white);">
             <div class="container">
                 <div class="section-title"><h2>บุคลากรของเรา</h2></div>
                 <div class="staff-grid">
@@ -415,7 +477,7 @@
             </div>
         </section>
 
-        <section id="contact" style="background-color: var(--white);">
+        <section id="contact" style="background-color: var(--light-bg);">
             <div class="container">
                 <div class="section-title"><h2>ติดต่อเรา</h2></div>
                 <div class="contact-wrapper">
@@ -453,7 +515,7 @@
     <footer>
         <div class="container">
             <p>© 2024 โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย</p>
-            <p style="font-size: 0.75rem; margin-top: 5px; opacity: 0.6;">ข้อมูล API: Open-Meteo (Weather/Air)</p>
+            <p style="font-size: 0.75rem; margin-top: 5px; opacity: 0.6;">ข้อมูล API: Open-Meteo & RSS2JSON (Sanook)</p>
         </div>
     </footer>
 
@@ -462,6 +524,7 @@
         const LAT = 14.652596611821945;
         const LON = 100.55087677040574;
 
+        // ฟังก์ชันดึงข้อมูล Dashboard (อากาศ/PM2.5/Heat)
         async function fetchDashboardData() {
             try {
                 // Weather + UV + Heat Index
@@ -515,13 +578,73 @@
                 document.getElementById('update-time').innerText = timeStr;
 
             } catch (error) { 
-                console.error("Error fetching data:", error);
-                document.getElementById('update-time').innerText = "โหลดล้มเหลว (Offline)";
+                console.error("Error fetching dashboard data:", error);
+                document.getElementById('update-time').innerText = "โหลดล้มเหลว";
+            }
+        }
+
+        // ฟังก์ชันดึงข่าวสุขภาพ
+        async function fetchHealthNews() {
+            const rssUrl = 'https://rssfeeds.sanook.com/rss/feeds/sanook/health.xml';
+            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+            
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (data.status === 'ok') {
+                    const newsContainer = document.getElementById('news-container');
+                    let html = '';
+                    
+                    // เลือกมา 3 ข่าวแรก
+                    data.items.slice(0, 3).forEach(item => {
+                        // หารูปภาพ: ถ้าไม่มี thumbnail ใช้รูป icon แทน
+                        let imgSrc = item.thumbnail;
+                        if (!imgSrc || imgSrc === "") {
+                            // หาจากใน content ถ้ามี (บางที rss ใส่ไว้ใน content)
+                            const match = item.content.match(/src="([^"]*)"/);
+                            if (match) {
+                                imgSrc = match[1];
+                            } else {
+                                // รูปสำรองถ้าไม่มีจริงๆ
+                                imgSrc = "https://via.placeholder.com/400x200?text=Health+News"; 
+                            }
+                        }
+
+                        // ตัดวันที่ให้สั้นลง
+                        const date = new Date(item.pubDate).toLocaleDateString('th-TH', {
+                            day: 'numeric', month: 'short', year: 'numeric'
+                        });
+
+                        html += `
+                            <div class="news-card">
+                                <img src="${imgSrc}" alt="news image" class="news-img" onerror="this.src='https://via.placeholder.com/400x200?text=News';">
+                                <div class="news-content">
+                                    <div class="news-date"><i class="far fa-calendar-alt"></i> ${date}</div>
+                                    <h3 class="news-title">${item.title}</h3>
+                                    <a href="${item.link}" target="_blank" class="news-link">อ่านเพิ่มเติม <i class="fas fa-arrow-right" style="font-size:0.8rem;"></i></a>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    newsContainer.innerHTML = html;
+                }
+            } catch (error) {
+                console.error("Error fetching news:", error);
+                document.getElementById('news-container').innerHTML = `
+                    <div style="text-align:center; grid-column: 1/-1; padding: 20px;">
+                        <p style="color:red;">ไม่สามารถโหลดข่าวได้ในขณะนี้</p>
+                        <a href="https://www.sanook.com/health/" target="_blank" class="btn btn-hero-contact" style="font-size:0.9rem;">
+                            อ่านข่าวที่ Sanook Health
+                        </a>
+                    </div>`;
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             fetchDashboardData();
+            fetchHealthNews(); // เรียกฟังก์ชันข่าว
             setInterval(fetchDashboardData, 1800000); 
         });
     </script>
