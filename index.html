@@ -633,14 +633,16 @@
 
         async function fetchDashboardData() {
             try {
-                // Fetch Data
-                const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m&hourly=uv_index&timezone=Asia%2FBangkok`;
+                // เพิ่มการดึง weather_code เพื่อเช็กพายุ
+                const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,weather_code&hourly=uv_index&timezone=Asia%2FBangkok`;
                 const wRes = await fetch(weatherUrl);
                 const wData = await wRes.json();
                 
                 // 1. Weather
                 const temp = wData.current.temperature_2m;
                 const humid = wData.current.relative_humidity_2m;
+                const weatherCode = wData.current.weather_code; // รหัสสภาพอากาศ
+
                 document.getElementById('weather-val').innerText = temp;
                 document.getElementById('humidity-val').innerText = humid;
 
@@ -696,6 +698,12 @@
                     warnings.push(`<li><i class="fas fa-lungs-virus"></i> ฝุ่น PM 2.5 สูงมาก (${pm25} µg/m³) เป็นอันตรายต่อสุขภาพ</li>`);
                 } else if (pm25 > 37.5) {
                     warnings.push(`<li><i class="fas fa-head-side-mask"></i> ฝุ่น PM 2.5 เริ่มมีผลกระทบ (${pm25} µg/m³) กลุ่มเสี่ยงควรระวัง</li>`);
+                }
+                // - เช็กพายุฝนฟ้าคะนอง (Weather Code: 95, 96, 99)
+                if ([95, 96, 99].includes(weatherCode)) {
+                    warnings.push(`<li><i class="fas fa-bolt"></i> มีพายุฝนฟ้าคะนองในพื้นที่ (Thunderstorm) โปรดระมัดระวัง</li>`);
+                } else if ([65, 82].includes(weatherCode)) {
+                    warnings.push(`<li><i class="fas fa-cloud-showers-heavy"></i> ฝนตกหนักมากในพื้นที่</li>`);
                 }
 
                 // หากมีคำเตือน -> แสดง Modal
