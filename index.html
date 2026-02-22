@@ -157,10 +157,13 @@
         .card-pm .data-icon { color: #f093fb; }
         .card-uv .data-icon { color: #ff9a9e; }
         .card-heat .data-icon { color: #ff6b6b; }
+        
         .status-badge {
             display: inline-block; margin-top: 8px; padding: 2px 10px;
             border-radius: 4px; font-size: 0.75rem; font-weight: 600;
         }
+        /* เพิ่ม margin สำหรับ badge ที่ซ้อนกันในกล่องอากาศ */
+        .stack-badge { margin-top: 4px; display: block; width: fit-content; }
 
         /* --- CSS สำหรับการแจ้งเตือนต่างๆ --- */
         
@@ -397,11 +400,16 @@
                             <h3>สภาพอากาศ</h3>
                             <div id="weather-val" class="data-value">--</div>
                             <div class="data-unit">องศาเซลเซียส (°C)</div>
-                            <div class="status-badge bg-light border">
+                            
+                            <div id="weather-desc" class="status-badge bg-light stack-badge">
+                                รอโหลด...
+                            </div>
+                            
+                            <div class="status-badge bg-light border stack-badge">
                                 <i class="fas fa-tint"></i> ความชื้น: <span id="humidity-val">--</span>%
                             </div>
                         </div>
-                        <div class="data-icon"><i class="fas fa-cloud-sun"></i></div>
+                        <div class="data-icon"><i id="weather-icon" class="fas fa-cloud-sun"></i></div>
                     </div>
 
                     <div class="data-card card-pm">
@@ -409,7 +417,7 @@
                             <h3>ฝุ่น PM 2.5</h3>
                             <div id="pm-val" class="data-value">--</div>
                             <div class="data-unit">µg/m³ (อยุธยา)</div>
-                            <div id="pm-status" class="status-badge bg-light">รอโหลด...</div>
+                            <div id="pm-status" class="status-badge bg-light stack-badge">รอโหลด...</div>
                         </div>
                         <div class="data-icon"><i class="fas fa-lungs-virus"></i></div>
                     </div>
@@ -419,7 +427,7 @@
                             <h3>ดัชนีรังสี UV</h3>
                             <div id="uv-val" class="data-value">--</div>
                             <div class="data-unit">ความเข้มข้นรังสี</div>
-                            <div id="uv-advice" class="status-badge bg-light">รอโหลด...</div>
+                            <div id="uv-advice" class="status-badge bg-light stack-badge">รอโหลด...</div>
                         </div>
                         <div class="data-icon"><i class="fas fa-sun"></i></div>
                     </div>
@@ -429,7 +437,7 @@
                             <h3>ดัชนีความร้อน (Heat Stroke)</h3>
                             <div id="heat-val" class="data-value" style="color: #d63031;">--</div>
                             <div class="data-unit">องศาเซลเซียส (รู้สึกจริง)</div>
-                            <div id="heat-status" class="status-badge bg-light">
+                            <div id="heat-status" class="status-badge bg-light stack-badge">
                                 รอโหลด...
                             </div>
                         </div>
@@ -629,27 +637,54 @@
             return (HI - 32) * 5/9;
         }
 
+        // ฟังก์ชันแปลรหัสสภาพอากาศ (WMO Weather Code) เป็นข้อความและไอคอน
+        function getWeatherDescription(code) {
+            let desc = "ไม่ทราบสถานะ";
+            let icon = "fa-cloud-sun";
+            let colorClass = "bg-light";
+
+            if (code === 0) { desc = "ท้องฟ้าแจ่มใส"; icon = "fa-sun"; colorClass = "bg-good"; }
+            else if (code === 1 || code === 2) { desc = "มีเมฆบางส่วน"; icon = "fa-cloud-sun"; colorClass = "bg-light"; }
+            else if (code === 3) { desc = "มีเมฆมาก"; icon = "fa-cloud"; colorClass = "bg-moderate"; }
+            else if (code === 45 || code === 48) { desc = "มีหมอก"; icon = "fa-smog"; colorClass = "bg-moderate"; }
+            else if (code >= 51 && code <= 57) { desc = "ฝนตกปรอยๆ"; icon = "fa-cloud-rain"; colorClass = "bg-light"; }
+            else if (code === 61 || code === 80) { desc = "ฝนตกเล็กน้อย"; icon = "fa-cloud-rain"; colorClass = "bg-light"; }
+            else if (code === 63 || code === 81) { desc = "ฝนตกปานกลาง"; icon = "fa-cloud-showers-water"; colorClass = "bg-unhealthy"; }
+            else if (code === 65 || code === 82) { desc = "ฝนตกหนัก"; icon = "fa-cloud-showers-heavy"; colorClass = "bg-danger"; }
+            else if (code === 95 || code === 96 || code === 99) { desc = "พายุฝนฟ้าคะนอง"; icon = "fa-poo-storm"; colorClass = "bg-danger"; }
+            else { desc = "มีฝนตก"; icon = "fa-cloud-rain"; colorClass = "bg-light"; }
+            
+            return { desc, icon, colorClass };
+        }
+
         async function fetchDashboardData() {
             try {
-                // เพิ่มการดึง weather_code เพื่อเช็กพายุ
+                // Fetch Weather
                 const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,weather_code&hourly=uv_index&timezone=Asia%2FBangkok`;
                 const wRes = await fetch(weatherUrl);
                 const wData = await wRes.json();
                 
-                // 1. Weather
+                // 1. Weather Data & Status
                 const temp = wData.current.temperature_2m;
                 const humid = wData.current.relative_humidity_2m;
-                const weatherCode = wData.current.weather_code; // รหัสสภาพอากาศ
+                const weatherCode = wData.current.weather_code;
 
                 document.getElementById('weather-val').innerText = temp;
                 document.getElementById('humidity-val').innerText = humid;
+
+                // อัปเดตข้อความและไอคอนสภาพอากาศ
+                const weatherStatus = getWeatherDescription(weatherCode);
+                const wDescEl = document.getElementById('weather-desc');
+                wDescEl.innerText = weatherStatus.desc;
+                wDescEl.className = 'status-badge stack-badge ' + weatherStatus.colorClass;
+                document.getElementById('weather-icon').className = 'fas ' + weatherStatus.icon;
 
                 // 2. UV
                 const currentHour = new Date().getHours();
                 let uvIndex = Math.round(wData.hourly.uv_index[currentHour] || 0);
                 const uvAdviceEl = document.getElementById('uv-advice');
                 document.getElementById('uv-val').innerText = uvIndex;
-                uvAdviceEl.className = 'status-badge'; 
+                uvAdviceEl.className = 'status-badge stack-badge'; 
                 if (uvIndex <= 2) { uvAdviceEl.classList.add('bg-good'); uvAdviceEl.innerText = 'ปลอดภัย (Low)'; }
                 else if (uvIndex <= 5) { uvAdviceEl.classList.add('bg-moderate'); uvAdviceEl.innerText = 'ปานกลาง (Mod)'; }
                 else if (uvIndex <= 7) { uvAdviceEl.classList.add('bg-unhealthy'); uvAdviceEl.innerText = 'สูง (High)'; }
@@ -660,7 +695,7 @@
                 const heatIndexVal = calculateHeatIndex(temp, humid);
                 const heatStatusEl = document.getElementById('heat-status');
                 document.getElementById('heat-val').innerText = heatIndexVal.toFixed(1);
-                heatStatusEl.className = 'status-badge';
+                heatStatusEl.className = 'status-badge stack-badge';
                 if (heatIndexVal < 27) { heatStatusEl.classList.add('bg-good'); heatStatusEl.innerText = "เฝ้าระวัง"; } 
                 else if (heatIndexVal < 32) { heatStatusEl.classList.add('bg-moderate'); heatStatusEl.innerText = "เตือนภัย (Caution)"; } 
                 else if (heatIndexVal < 42) { heatStatusEl.classList.add('bg-unhealthy'); heatStatusEl.innerText = "อันตราย (Danger)"; heatStatusEl.style.color = "#856404"; } 
@@ -674,7 +709,7 @@
                 const pm25 = aData.current.pm2_5;
                 const pmStatusEl = document.getElementById('pm-status');
                 document.getElementById('pm-val').innerText = pm25;
-                pmStatusEl.className = 'status-badge';
+                pmStatusEl.className = 'status-badge stack-badge';
                 if (pm25 <= 15) { pmStatusEl.classList.add('bg-good'); pmStatusEl.innerText = "ดีมาก"; }
                 else if (pm25 <= 25) { pmStatusEl.classList.add('bg-good'); pmStatusEl.innerText = "ดี"; }
                 else if (pm25 <= 37.5) { pmStatusEl.classList.add('bg-moderate'); pmStatusEl.innerText = "ปานกลาง"; }
@@ -683,31 +718,16 @@
 
                 // --- 5. LOGIC การแจ้งเตือน (Modal) ---
                 let warnings = [];
-                // - เช็ก Heat Index (>= 42 C)
-                if (heatIndexVal >= 42) {
-                    warnings.push(`<li><i class="fas fa-fire"></i> ดัชนีความร้อนสูงระดับอันตราย (${heatIndexVal.toFixed(1)}°C) ระวัง Heat Stroke</li>`);
-                }
-                // - เช็ก UV (>= 8)
-                if (uvIndex >= 8) {
-                    warnings.push(`<li><i class="fas fa-sun"></i> ดัชนีรังสี UV สูงมาก (ระดับ ${uvIndex}) ควรงดออกแดด</li>`);
-                }
-                // - เช็ก PM 2.5 (>= 37.5 สีส้ม, >= 75 สีแดง)
-                if (pm25 > 75) {
-                    warnings.push(`<li><i class="fas fa-lungs-virus"></i> ฝุ่น PM 2.5 สูงมาก (${pm25} µg/m³) เป็นอันตรายต่อสุขภาพ</li>`);
-                } else if (pm25 > 37.5) {
-                    warnings.push(`<li><i class="fas fa-head-side-mask"></i> ฝุ่น PM 2.5 เริ่มมีผลกระทบ (${pm25} µg/m³) กลุ่มเสี่ยงควรระวัง</li>`);
-                }
-                // - เช็กพายุฝนฟ้าคะนอง (Weather Code: 95, 96, 99)
-                if ([95, 96, 99].includes(weatherCode)) {
-                    warnings.push(`<li><i class="fas fa-bolt"></i> มีพายุฝนฟ้าคะนองในพื้นที่ (Thunderstorm) โปรดระมัดระวัง</li>`);
-                } else if ([65, 82].includes(weatherCode)) {
-                    warnings.push(`<li><i class="fas fa-cloud-showers-heavy"></i> ฝนตกหนักมากในพื้นที่</li>`);
-                }
+                if (heatIndexVal >= 42) warnings.push(`<li><i class="fas fa-fire"></i> ดัชนีความร้อนสูงระดับอันตราย (${heatIndexVal.toFixed(1)}°C) ระวัง Heat Stroke</li>`);
+                if (uvIndex >= 8) warnings.push(`<li><i class="fas fa-sun"></i> ดัชนีรังสี UV สูงมาก (ระดับ ${uvIndex}) ควรงดออกแดด</li>`);
+                if (pm25 > 75) warnings.push(`<li><i class="fas fa-lungs-virus"></i> ฝุ่น PM 2.5 สูงมาก (${pm25} µg/m³) เป็นอันตรายต่อสุขภาพ</li>`);
+                else if (pm25 > 37.5) warnings.push(`<li><i class="fas fa-head-side-mask"></i> ฝุ่น PM 2.5 เริ่มมีผลกระทบ (${pm25} µg/m³) กลุ่มเสี่ยงควรระวัง</li>`);
+                
+                if ([95, 96, 99].includes(weatherCode)) warnings.push(`<li><i class="fas fa-bolt"></i> มีพายุฝนฟ้าคะนองในพื้นที่ โปรดระมัดระวัง</li>`);
+                else if ([65, 82].includes(weatherCode)) warnings.push(`<li><i class="fas fa-cloud-showers-heavy"></i> ฝนตกหนักมากในพื้นที่</li>`);
 
-                // หากมีคำเตือน -> แสดง Modal
                 if (warnings.length > 0) {
-                    const warningList = document.getElementById('warning-list');
-                    warningList.innerHTML = warnings.join('');
+                    document.getElementById('warning-list').innerHTML = warnings.join('');
                     document.getElementById('warning-modal').style.display = 'flex';
                 }
                 // ----------------------------------------
@@ -752,7 +772,7 @@
             fetchDashboardData();
             fetchHealthNews();
             showToast(); 
-            setInterval(fetchDashboardData, 1800000); 
+            setInterval(fetchDashboardData, 1800000); // 30 นาทีอัปเดตครั้งนึง
         });
     </script>
 </body>
