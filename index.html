@@ -11,9 +11,9 @@
     <style>
         /* --- CSS Variables & Reset --- */
         :root {
-            --primary-color: #2E8B57; /* Sea Green */
-            --secondary-color: #4682B4; /* Steel Blue */
-            --accent-color: #FF6347; /* Tomato */
+            --primary-color: #2E8B57;
+            --secondary-color: #4682B4;
+            --accent-color: #FF6347;
             --light-bg: #F4F7F6;
             --white: #ffffff;
             --text-dark: #333333;
@@ -34,26 +34,15 @@
             position: relative;
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
         /* --- Global Sections --- */
-        section { 
-            padding: 50px 0;
-            scroll-margin-top: var(--nav-height); 
-        }
+        section { padding: 50px 0; scroll-margin-top: var(--nav-height); }
         
         .section-title { text-align: center; margin-bottom: 30px; }
         .section-title h2 { 
-            font-size: 1.8rem; 
-            color: var(--primary-color); 
-            position: relative; 
-            display: inline-block; 
-            font-weight: 700;
-            margin-bottom: 5px;
+            font-size: 1.8rem; color: var(--primary-color); 
+            position: relative; display: inline-block; font-weight: 700; margin-bottom: 5px;
         }
         .section-title h2::after {
             content: ''; display: block; width: 50px; height: 3px; 
@@ -61,46 +50,41 @@
         }
         
         .last-update-badge {
-            display: inline-block;
-            background-color: #e9ecef;
-            color: #555;
-            padding: 3px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-top: 8px;
+            display: inline-block; background-color: #e9ecef; color: #555;
+            padding: 3px 12px; border-radius: 20px; font-size: 0.8rem; margin-top: 8px;
         }
 
         /* --- Buttons --- */
         .btn {
             display: inline-block; padding: 10px 30px; border-radius: 50px;
             text-decoration: none; font-weight: 600; transition: all 0.3s ease;
-            cursor: pointer; border: none; font-size: 1rem;
+            cursor: pointer; font-size: 1rem;
         }
         .btn-hero-contact {
-            background-color: var(--white);
-            color: var(--primary-color);
+            background-color: var(--white); color: var(--primary-color);
+            border: 2px solid var(--white);
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
         .btn-hero-contact:hover {
-            transform: translateY(-3px);
-            background-color: #f0fff4;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            transform: translateY(-3px); background-color: #f0fff4; box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* ปุ่มเข้าสู่ระบบแอดมินแบบโปร่งแสง */
+        .btn-hero-admin {
+            background-color: transparent; color: var(--white);
+            border: 2px solid var(--white);
+        }
+        .btn-hero-admin:hover {
+            transform: translateY(-3px); background-color: var(--white); color: var(--primary-color); box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
 
         /* --- Header --- */
         header {
-            background-color: var(--white);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky; top: 0; z-index: 1000;
-            height: var(--nav-height); display: flex; align-items: center;
+            background-color: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky; top: 0; z-index: 1000; height: var(--nav-height); display: flex; align-items: center;
         }
-        .nav-wrapper {
-            display: flex; justify-content: space-between; align-items: center; width: 100%;
-        }
-        .logo {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 1.2rem; font-weight: 700; color: var(--primary-color);
-        }
+        .nav-wrapper { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; font-weight: 700; color: var(--primary-color); }
         .logo i { font-size: 1.6rem; }
         
         nav ul { display: flex; list-style: none; gap: 15px; }
@@ -110,33 +94,20 @@
         /* --- Hero Section --- */
         .hero {
             background: linear-gradient(rgba(46, 139, 87, 0.9), rgba(70, 130, 180, 0.85)), url('https://picsum.photos/seed/healthcenter/1920/1080.jpg');
-            background-size: cover; background-position: center;
-            color: var(--white);
-            padding: 80px 0 70px 0;
-            text-align: center;
+            background-size: cover; background-position: center; color: var(--white);
+            padding: 80px 0 70px 0; text-align: center;
         }
-        .hero h1 { 
-            font-size: 2.2rem; margin-bottom: 10px; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3); line-height: 1.3; 
-        }
+        .hero h1 { font-size: 2.2rem; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); line-height: 1.3; }
         .hero p { font-size: 1rem; opacity: 0.95; margin-bottom: 30px; font-weight: 300; }
-        .hero-buttons { display: flex; gap: 10px; justify-content: center; }
+        .hero-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
 
         /* --- Dashboard --- */
         .dashboard { background-color: #fff; border-bottom: 1px solid #eee; }
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
-            gap: 20px;
-        }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
         .data-card {
-            background: var(--light-bg);
-            padding: 20px;
-            border-radius: var(--radius);
+            background: var(--light-bg); padding: 20px; border-radius: var(--radius);
             display: flex; align-items: center; justify-content: space-between;
-            border: 1px solid #e1e8ed;
-            border-left: 4px solid #ccc;
-            transition: transform 0.2s;
+            border: 1px solid #e1e8ed; border-left: 4px solid #ccc; transition: transform 0.2s;
         }
         .data-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
 
@@ -149,8 +120,7 @@
         .data-value { font-size: 2rem; font-weight: 700; color: var(--text-dark); line-height: 1.1; }
         .data-unit { font-size: 0.75rem; color: #888; }
         .data-icon {
-            width: 50px; height: 50px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
             font-size: 1.5rem; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         .card-weather .data-icon { color: #4facfe; }
@@ -162,29 +132,14 @@
             display: inline-block; margin-top: 8px; padding: 2px 10px;
             border-radius: 4px; font-size: 0.75rem; font-weight: 600;
         }
-        /* เพิ่ม margin สำหรับ badge ที่ซ้อนกันในกล่องอากาศ */
         .stack-badge { margin-top: 4px; display: block; width: fit-content; }
 
-        /* --- CSS สำหรับการแจ้งเตือนต่างๆ --- */
-        
-        /* 1. Toast Notification (มุมขวาล่าง) */
+        /* --- Notification CSS --- */
         .toast-box {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-            border-left: 5px solid var(--primary-color);
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            transform: translateX(150%);
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            z-index: 9999;
-            max-width: 350px;
-            width: 90%;
+            position: fixed; bottom: 30px; right: 30px; background: white; padding: 15px 20px;
+            border-radius: 10px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); border-left: 5px solid var(--primary-color);
+            display: flex; align-items: flex-start; gap: 15px; transform: translateX(150%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 9999; max-width: 350px; width: 90%;
         }
         .toast-show { transform: translateX(0); }
         .toast-icon { color: var(--primary-color); font-size: 1.5rem; margin-top: 2px; }
@@ -193,122 +148,62 @@
         .toast-close { color: #999; cursor: pointer; font-size: 1rem; margin-left: auto; }
         .toast-close:hover { color: var(--accent-color); }
 
-        /* 2. Popup Warning Modal (แจ้งเตือนภัยกลางจอ) */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); z-index: 9999;
-            display: none; /* ซ่อนไว้เป็นค่าเริ่มต้น */
-            justify-content: center; align-items: center;
-            backdrop-filter: blur(2px);
+            background: rgba(0,0,0,0.7); z-index: 9999; display: none;
+            justify-content: center; align-items: center; backdrop-filter: blur(2px);
         }
         .modal-content {
-            background: #fff; width: 90%; max-width: 420px;
-            border-radius: 16px; overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center;
+            background: #fff; width: 90%; max-width: 420px; border-radius: 16px; overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center; max-height: 90vh; display: flex; flex-direction: column;
         }
-        @keyframes popIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .modal-header {
-            background-color: #e74c3c; color: white; padding: 15px;
-            font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px;
+            background-color: #e74c3c; color: white; padding: 15px; font-size: 1.2rem; font-weight: 700; 
+            display: flex; align-items: center; justify-content: center; gap: 10px; flex-shrink: 0;
         }
-        .modal-body { padding: 25px 20px; }
+        .modal-body { padding: 25px 20px; overflow-y: auto; }
         .warning-list { list-style: none; text-align: left; margin: 0; padding: 0; }
         .warning-list li {
-            background: #fff5f5; border-left: 4px solid #e74c3c;
-            padding: 10px 15px; margin-bottom: 10px; border-radius: 4px;
-            font-size: 0.95rem; color: #c0392b; font-weight: 500;
-            display: flex; align-items: center; gap: 10px;
+            background: #fff5f5; border-left: 4px solid #e74c3c; padding: 10px 15px; margin-bottom: 10px; 
+            border-radius: 4px; font-size: 0.95rem; color: #c0392b; font-weight: 500; display: flex; align-items: flex-start; gap: 10px;
         }
+        .warning-list li i { margin-top: 3px; }
         .btn-close-modal {
-            background-color: #333; color: white; border: none;
-            padding: 12px 30px; border-radius: 50px; font-size: 1rem; cursor: pointer;
-            margin-top: 10px; transition: background 0.2s;
+            background-color: #333; color: white; border: none; padding: 12px 30px; border-radius: 50px; 
+            font-size: 1rem; cursor: pointer; margin-top: 15px; transition: background 0.2s; width: 100%;
         }
         .btn-close-modal:hover { background-color: #555; }
 
         /* --- About Section --- */
-        .about-box {
-            background: #fff; padding: 30px; border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-left: 5px solid var(--primary-color);
-        }
+        .about-box { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 5px solid var(--primary-color); }
         .about-list { list-style: none; margin: 20px 0 20px 10px; }
         .about-list li { margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-        .about-note {
-            background-color: #fff3cd; color: #856404; padding: 15px;
-            border-radius: 8px; border: 1px solid #ffeeba;
-            display: flex; gap: 15px; align-items: start;
-        }
+        .about-note { background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; border: 1px solid #ffeeba; display: flex; gap: 15px; align-items: start; }
 
         /* --- Services & Staff --- */
         .services-grid, .staff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        
-        .service-card {
-            background: var(--white); padding: 25px 20px; border-radius: var(--radius);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03); text-align: center; border: 1px solid #eee;
-        }
+        .service-card { background: var(--white); padding: 25px 20px; border-radius: var(--radius); box-shadow: 0 2px 5px rgba(0,0,0,0.03); text-align: center; border: 1px solid #eee; }
         .service-icon { font-size: 2.5rem; color: var(--secondary-color); margin-bottom: 15px; }
-
-        .staff-card {
-            background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);
-            overflow: hidden; text-align: center; padding-bottom: 15px; border: 1px solid #eee;
-        }
-        .staff-img-wrapper {
-            width: 100%; height: 200px; background-color: #e9ecef;
-            display: flex; align-items: center; justify-content: center; 
-            color: #adb5bd; /* สีไอคอนเทาเข้ม */
-            font-size: 5rem;
-        }
+        .staff-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; text-align: center; padding-bottom: 15px; border: 1px solid #eee; }
+        .staff-img-wrapper { width: 100%; height: 200px; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; color: #adb5bd; font-size: 5rem; }
         .staff-card h3 { margin-top: 15px; color: var(--primary-color); font-size: 1.1rem; margin-bottom: 5px; }
         .staff-card p { font-size: 0.9rem; color: #555; font-weight: 500; margin-bottom: 15px; }
 
         /* --- News Section --- */
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-        .news-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            border: 1px solid #eee;
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .news-card { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee; transition: transform 0.3s ease; display: flex; flex-direction: column; height: 100%; }
         .news-card:hover { transform: translateY(-5px); }
-        .news-img {
-            width: 100%; height: 180px; object-fit: cover; background-color: #eee;
-        }
-        .news-content {
-            padding: 20px; flex-grow: 1; display: flex; flex-direction: column;
-        }
-        .news-date {
-            font-size: 0.75rem; color: #999; margin-bottom: 8px; display: flex; align-items: center; gap: 5px;
-        }
-        .news-title {
-            font-size: 1rem; font-weight: 600; margin-bottom: 12px;
-            line-height: 1.4; color: var(--text-dark);
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-        }
-        .news-link {
-            margin-top: auto; color: var(--primary-color); text-decoration: none; font-size: 0.9rem; font-weight: 600;
-        }
+        .news-img { width: 100%; height: 180px; object-fit: cover; background-color: #eee; }
+        .news-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .news-date { font-size: 0.75rem; color: #999; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+        .news-title { font-size: 1rem; font-weight: 600; margin-bottom: 12px; line-height: 1.4; color: var(--text-dark); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .news-link { margin-top: auto; color: var(--primary-color); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
         .news-link:hover { text-decoration: underline; }
 
         /* --- Contact --- */
-        .contact-wrapper {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-            background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
-        }
+        .contact-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
         .contact-info { padding: 30px; }
         .contact-item { display: flex; gap: 15px; margin-bottom: 20px; }
         .contact-item i { color: var(--primary-color); font-size: 1.2rem; margin-top: 3px; }
@@ -332,9 +227,9 @@
             nav ul { gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 10px;}
             section { padding: 30px 0; }
             .hero { padding: 50px 0; }
-            .hero h1 { font-size: 1.6rem; }
             .dashboard-grid { grid-template-columns: 1fr; }
             .contact-wrapper { grid-template-columns: 1fr; }
+            .hero-buttons { flex-direction: column; padding: 0 20px; }
         }
     </style>
 </head>
@@ -343,11 +238,11 @@
     <div id="warning-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <i class="fas fa-exclamation-triangle"></i> แจ้งเตือนภัยสุขภาพ
+                <i class="fas fa-bell"></i> แจ้งเตือนข่าวสารและภัยสุขภาพ
             </div>
             <div class="modal-body">
-                <ul id="warning-list" class="warning-list">
-                    </ul>
+                <ul id="admin-warning-list" class="warning-list" style="margin-bottom: 10px;"></ul>
+                <ul id="weather-warning-list" class="warning-list"></ul>
                 <button onclick="closeModal()" class="btn-close-modal">รับทราบ / ปิดหน้าต่าง</button>
             </div>
         </div>
@@ -381,6 +276,9 @@
                     <a href="#contact" class="btn btn-hero-contact">
                         <i class="fas fa-phone-alt"></i> ติดต่อเรา
                     </a>
+                    <a href="admin.html" class="btn btn-hero-admin">
+                        <i class="fas fa-lock"></i> เข้าสู่ระบบเจ้าหน้าที่
+                    </a>
                 </div>
             </div>
         </section>
@@ -400,11 +298,7 @@
                             <h3>สภาพอากาศ</h3>
                             <div id="weather-val" class="data-value">--</div>
                             <div class="data-unit">องศาเซลเซียส (°C)</div>
-                            
-                            <div id="weather-desc" class="status-badge bg-light stack-badge">
-                                รอโหลด...
-                            </div>
-                            
+                            <div id="weather-desc" class="status-badge bg-light stack-badge">รอโหลด...</div>
                             <div class="status-badge bg-light border stack-badge">
                                 <i class="fas fa-tint"></i> ความชื้น: <span id="humidity-val">--</span>%
                             </div>
@@ -437,9 +331,7 @@
                             <h3>ดัชนีความร้อน (Heat Stroke)</h3>
                             <div id="heat-val" class="data-value" style="color: #d63031;">--</div>
                             <div class="data-unit">องศาเซลเซียส (รู้สึกจริง)</div>
-                            <div id="heat-status" class="status-badge bg-light stack-badge">
-                                รอโหลด...
-                            </div>
+                            <div id="heat-status" class="status-badge bg-light stack-badge">รอโหลด...</div>
                         </div>
                         <div class="data-icon"><i class="fas fa-temperature-high"></i></div>
                     </div>
@@ -449,15 +341,11 @@
 
         <section id="about" style="background-color: var(--light-bg);">
             <div class="container">
-                <div class="section-title">
-                    <h2>เกี่ยวกับเรา</h2>
-                </div>
-                
+                <div class="section-title"><h2>เกี่ยวกับเรา</h2></div>
                 <div class="about-box">
                     <p style="margin-bottom: 20px; font-size: 1.05rem;">
                         <strong>โรงพยาบาลส่งเสริมสุขภาพตำบลคลองน้อย</strong> เป็นสถานพยาบาลประจำตำบลสังกัดกระทรวงสาธารณสุข และองค์กรปกครองส่วนท้องถิ่น มีขีดความสามารถในการให้บริการระดับปฐมภูมิ (Primary Care) ซึ่งได้รับการยกฐานะจากสถานีอนามัยตามนโยบายของรัฐบาล
                     </p>
-
                     <h3 style="font-size: 1.1rem; color: var(--primary-color); margin-bottom: 10px;">
                         <i class="fas fa-bullseye"></i> พันธกิจและความมุ่งมั่น
                     </h3>
@@ -467,7 +355,6 @@
                         <li><i class="fas fa-check-circle" style="color: var(--primary-color);"></i> การรักษาพยาบาลเบื้องต้น</li>
                         <li><i class="fas fa-check-circle" style="color: var(--primary-color);"></i> การฟื้นฟูสภาพ</li>
                     </ul>
-
                     <div class="about-note">
                         <i class="fas fa-info-circle" style="font-size: 1.5rem; margin-top: 2px;"></i>
                         <div>
@@ -483,31 +370,26 @@
             <div class="container">
                 <div class="section-title"><h2>บริการของเรา</h2></div>
                 <div class="services-grid">
-                    
                     <div class="service-card">
                         <div class="service-icon"><i class="fas fa-pills"></i></div>
                         <h3>ตรวจรักษาโรคทั่วไป</h3>
                         <p>รักษาอาการเจ็บป่วยเบื้องต้น เช่น ไข้หวัด ท้องเสีย ปวดศีรษะ และจ่ายยาตามอาการ</p>
                     </div>
-
                     <div class="service-card">
                         <div class="service-icon"><i class="fas fa-syringe"></i></div>
                         <h3>บริการหัตถการ & ฉีดยา</h3>
                         <p>บริการล้างแผล ทำแผล และฉีดยาต่อเนื่อง (กรณีผู้ป่วยมียาฉีดจากโรงพยาบาล)</p>
                     </div>
-
                     <div class="service-card">
                         <div class="service-icon"><i class="fas fa-child"></i></div>
                         <h3>วัคซีน & อนามัยโรงเรียน</h3>
                         <p>บริการฉีดวัคซีนสร้างเสริมภูมิคุ้มกันโรค (เด็กวัยเรียน) และส่งเสริมสุขภาพเด็ก</p>
                     </div>
-
                     <div class="service-card">
                         <div class="service-icon"><i class="fas fa-home"></i></div>
                         <h3>เยี่ยมบ้าน & ผู้ป่วยเรื้อรัง</h3>
                         <p>ติดตามเยี่ยมบ้านดูแลผู้ป่วยติดเตียง ผู้พิการ และผู้สูงอายุในชุมชนอย่างต่อเนื่อง</p>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -530,25 +412,21 @@
             <div class="container">
                 <div class="section-title"><h2>บุคลากรของเรา</h2></div>
                 <div class="staff-grid">
-                    
                     <div class="staff-card">
                         <div class="staff-img-wrapper"><i class="fas fa-user"></i></div>
                         <h3>นางสาวโสภา แย้มศิริ</h3>
                         <p>ผู้อำนวยการโรงพยาบาลส่งเสริมสุขภาพตำบล</p>
                     </div>
-
                     <div class="staff-card">
                         <div class="staff-img-wrapper"><i class="fas fa-user"></i></div>
                         <h3>นางอารี ชื่นชู</h3>
                         <p>พยาบาลวิชาชีพชำนาญการ</p>
                     </div>
-
                     <div class="staff-card">
                         <div class="staff-img-wrapper"><i class="fas fa-user"></i></div>
                         <h3>นางสาวสุทธิรัตน์ บุญแสวง</h3>
                         <p>เจ้าพนักงานธุรการ</p>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -605,26 +483,16 @@
     </div>
 
     <script>
-        // --- Reset Scroll to Top ---
         if (history.scrollRestoration) { history.scrollRestoration = 'manual'; }
         window.onload = function() { window.scrollTo(0, 0); }
 
-        // --- Notification Controls ---
-        function showToast() {
-            setTimeout(() => { document.getElementById('toast-notification').classList.add('toast-show'); }, 3000);
-        }
-        function closeToast() {
-            document.getElementById('toast-notification').classList.remove('toast-show');
-        }
-        function closeModal() {
-            document.getElementById('warning-modal').style.display = 'none';
-        }
+        function showToast() { setTimeout(() => { document.getElementById('toast-notification').classList.add('toast-show'); }, 3000); }
+        function closeToast() { document.getElementById('toast-notification').classList.remove('toast-show'); }
+        function closeModal() { document.getElementById('warning-modal').style.display = 'none'; }
 
-        // พิกัด ต.คลองน้อย อ.บ้านแพรก จ.อยุธยา
         const LAT = 14.652596611821945;
         const LON = 100.55087677040574;
 
-        // ฟังก์ชันคำนวณ Heat Index
         function calculateHeatIndex(tempC, humidity) {
             const T = (tempC * 9/5) + 32; 
             const RH = humidity;
@@ -637,12 +505,8 @@
             return (HI - 32) * 5/9;
         }
 
-        // ฟังก์ชันแปลรหัสสภาพอากาศ (WMO Weather Code) เป็นข้อความและไอคอน
         function getWeatherDescription(code) {
-            let desc = "ไม่ทราบสถานะ";
-            let icon = "fa-cloud-sun";
-            let colorClass = "bg-light";
-
+            let desc = "ไม่ทราบสถานะ"; let icon = "fa-cloud-sun"; let colorClass = "bg-light";
             if (code === 0) { desc = "ท้องฟ้าแจ่มใส"; icon = "fa-sun"; colorClass = "bg-good"; }
             else if (code === 1 || code === 2) { desc = "มีเมฆบางส่วน"; icon = "fa-cloud-sun"; colorClass = "bg-light"; }
             else if (code === 3) { desc = "มีเมฆมาก"; icon = "fa-cloud"; colorClass = "bg-moderate"; }
@@ -653,18 +517,14 @@
             else if (code === 65 || code === 82) { desc = "ฝนตกหนัก"; icon = "fa-cloud-showers-heavy"; colorClass = "bg-danger"; }
             else if (code === 95 || code === 96 || code === 99) { desc = "พายุฝนฟ้าคะนอง"; icon = "fa-poo-storm"; colorClass = "bg-danger"; }
             else { desc = "มีฝนตก"; icon = "fa-cloud-rain"; colorClass = "bg-light"; }
-            
             return { desc, icon, colorClass };
         }
 
         async function fetchDashboardData() {
             try {
-                // Fetch Weather
                 const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,weather_code&hourly=uv_index&timezone=Asia%2FBangkok`;
-                const wRes = await fetch(weatherUrl);
-                const wData = await wRes.json();
+                const wRes = await fetch(weatherUrl); const wData = await wRes.json();
                 
-                // 1. Weather Data & Status
                 const temp = wData.current.temperature_2m;
                 const humid = wData.current.relative_humidity_2m;
                 const weatherCode = wData.current.weather_code;
@@ -672,14 +532,12 @@
                 document.getElementById('weather-val').innerText = temp;
                 document.getElementById('humidity-val').innerText = humid;
 
-                // อัปเดตข้อความและไอคอนสภาพอากาศ
                 const weatherStatus = getWeatherDescription(weatherCode);
                 const wDescEl = document.getElementById('weather-desc');
                 wDescEl.innerText = weatherStatus.desc;
                 wDescEl.className = 'status-badge stack-badge ' + weatherStatus.colorClass;
                 document.getElementById('weather-icon').className = 'fas ' + weatherStatus.icon;
 
-                // 2. UV
                 const currentHour = new Date().getHours();
                 let uvIndex = Math.round(wData.hourly.uv_index[currentHour] || 0);
                 const uvAdviceEl = document.getElementById('uv-advice');
@@ -691,7 +549,6 @@
                 else if (uvIndex <= 10) { uvAdviceEl.classList.add('bg-danger'); uvAdviceEl.innerText = 'สูงมาก (Very High)'; }
                 else { uvAdviceEl.classList.add('bg-danger'); uvAdviceEl.innerText = 'อันตราย (Extreme)'; }
 
-                // 3. Heat Index
                 const heatIndexVal = calculateHeatIndex(temp, humid);
                 const heatStatusEl = document.getElementById('heat-status');
                 document.getElementById('heat-val').innerText = heatIndexVal.toFixed(1);
@@ -702,10 +559,8 @@
                 else if (heatIndexVal < 54) { heatStatusEl.classList.add('bg-danger'); heatStatusEl.innerText = "อันตรายมาก"; } 
                 else { heatStatusEl.classList.add('bg-danger'); heatStatusEl.innerText = "อันตรายสูงสุด!!"; }
 
-                // 4. PM 2.5
                 const airUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${LAT}&longitude=${LON}&current=pm2_5&timezone=Asia%2FBangkok`;
-                const aRes = await fetch(airUrl);
-                const aData = await aRes.json();
+                const aRes = await fetch(airUrl); const aData = await aRes.json();
                 const pm25 = aData.current.pm2_5;
                 const pmStatusEl = document.getElementById('pm-status');
                 document.getElementById('pm-val').innerText = pm25;
@@ -716,21 +571,20 @@
                 else if (pm25 <= 75) { pmStatusEl.classList.add('bg-unhealthy'); pmStatusEl.innerText = "เริ่มมีผล"; }
                 else { pmStatusEl.classList.add('bg-danger'); pmStatusEl.innerText = "อันตราย"; }
 
-                // --- 5. LOGIC การแจ้งเตือน (Modal) ---
+                // อัปเดตแจ้งเตือนสภาพอากาศ
                 let warnings = [];
-                if (heatIndexVal >= 42) warnings.push(`<li><i class="fas fa-fire"></i> ดัชนีความร้อนสูงระดับอันตราย (${heatIndexVal.toFixed(1)}°C) ระวัง Heat Stroke</li>`);
-                if (uvIndex >= 8) warnings.push(`<li><i class="fas fa-sun"></i> ดัชนีรังสี UV สูงมาก (ระดับ ${uvIndex}) ควรงดออกแดด</li>`);
-                if (pm25 > 75) warnings.push(`<li><i class="fas fa-lungs-virus"></i> ฝุ่น PM 2.5 สูงมาก (${pm25} µg/m³) เป็นอันตรายต่อสุขภาพ</li>`);
-                else if (pm25 > 37.5) warnings.push(`<li><i class="fas fa-head-side-mask"></i> ฝุ่น PM 2.5 เริ่มมีผลกระทบ (${pm25} µg/m³) กลุ่มเสี่ยงควรระวัง</li>`);
+                if (heatIndexVal >= 42) warnings.push(`<li><i class="fas fa-fire"></i><div>ดัชนีความร้อนสูงระดับอันตราย (${heatIndexVal.toFixed(1)}°C) ระวัง Heat Stroke</div></li>`);
+                if (uvIndex >= 8) warnings.push(`<li><i class="fas fa-sun"></i><div>ดัชนีรังสี UV สูงมาก (ระดับ ${uvIndex}) ควรงดออกแดด</div></li>`);
+                if (pm25 > 75) warnings.push(`<li><i class="fas fa-lungs-virus"></i><div>ฝุ่น PM 2.5 สูงมาก (${pm25} µg/m³) เป็นอันตรายต่อสุขภาพ</div></li>`);
+                else if (pm25 > 37.5) warnings.push(`<li><i class="fas fa-head-side-mask"></i><div>ฝุ่น PM 2.5 เริ่มมีผลกระทบ (${pm25} µg/m³) กลุ่มเสี่ยงควรระวัง</div></li>`);
                 
-                if ([95, 96, 99].includes(weatherCode)) warnings.push(`<li><i class="fas fa-bolt"></i> มีพายุฝนฟ้าคะนองในพื้นที่ โปรดระมัดระวัง</li>`);
-                else if ([65, 82].includes(weatherCode)) warnings.push(`<li><i class="fas fa-cloud-showers-heavy"></i> ฝนตกหนักมากในพื้นที่</li>`);
+                if ([95, 96, 99].includes(weatherCode)) warnings.push(`<li><i class="fas fa-bolt"></i><div>มีพายุฝนฟ้าคะนองในพื้นที่ โปรดระมัดระวัง</div></li>`);
+                else if ([65, 82].includes(weatherCode)) warnings.push(`<li><i class="fas fa-cloud-showers-heavy"></i><div>ฝนตกหนักมากในพื้นที่</div></li>`);
 
                 if (warnings.length > 0) {
-                    document.getElementById('warning-list').innerHTML = warnings.join('');
+                    document.getElementById('weather-warning-list').innerHTML = warnings.join('');
                     document.getElementById('warning-modal').style.display = 'flex';
                 }
-                // ----------------------------------------
 
                 const now = new Date();
                 document.getElementById('update-time').innerText = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.';
@@ -745,11 +599,9 @@
             const rssUrl = 'https://rssfeeds.sanook.com/rss/feeds/sanook/health.xml';
             const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
             try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
+                const response = await fetch(apiUrl); const data = await response.json();
                 if (data.status === 'ok') {
-                    const newsContainer = document.getElementById('news-container');
-                    let html = '';
+                    const newsContainer = document.getElementById('news-container'); let html = '';
                     data.items.slice(0, 3).forEach(item => {
                         let imgSrc = item.thumbnail || (item.content.match(/src="([^"]*)"/) ? item.content.match(/src="([^"]*)"/)[1] : "https://via.placeholder.com/400x200?text=Health+News");
                         const date = new Date(item.pubDate).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -772,7 +624,45 @@
             fetchDashboardData();
             fetchHealthNews();
             showToast(); 
-            setInterval(fetchDashboardData, 1800000); // 30 นาทีอัปเดตครั้งนึง
+            setInterval(fetchDashboardData, 1800000); 
+        });
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCwIQ33-7sN8WvIezTOKFOO4vm2HDx4Nfs",
+            authDomain: "klongnoi-website.firebaseapp.com",
+            projectId: "klongnoi-website",
+            storageBucket: "klongnoi-website.firebasestorage.app",
+            messagingSenderId: "227287752474",
+            appId: "1:227287752474:web:dab8803a8feb4e1c79d6a3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const q = query(collection(db, "alerts"), orderBy("timestamp", "desc"));
+        onSnapshot(q, (snapshot) => {
+            const adminList = document.getElementById('admin-warning-list');
+            adminList.innerHTML = ''; 
+            
+            if (!snapshot.empty) {
+                let adminAlertsHTML = '';
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    adminAlertsHTML += `
+                        <li style="background: #fff3cd; border-left-color: #ffc107; color: #856404;">
+                            <i class="fas fa-bullhorn" style="font-size: 1.2rem; margin-top: 2px;"></i> 
+                            <div><strong>ประกาศ รพ.สต.:</strong><br>${data.message}</div>
+                        </li>`;
+                });
+                
+                adminList.innerHTML = adminAlertsHTML;
+                document.getElementById('warning-modal').style.display = 'flex'; 
+            }
         });
     </script>
 </body>
