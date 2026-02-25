@@ -68,15 +68,6 @@
         .btn-hero-contact:hover {
             transform: translateY(-3px); background-color: #f0fff4; box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
-        
-        /* ปุ่มเข้าสู่ระบบแอดมินแบบโปร่งแสง */
-        .btn-hero-admin {
-            background-color: transparent; color: var(--white);
-            border: 2px solid var(--white);
-        }
-        .btn-hero-admin:hover {
-            transform: translateY(-3px); background-color: var(--white); color: var(--primary-color); box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-        }
 
         /* --- Header --- */
         header {
@@ -87,9 +78,23 @@
         .logo { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; font-weight: 700; color: var(--primary-color); }
         .logo i { font-size: 1.6rem; }
         
-        nav ul { display: flex; list-style: none; gap: 15px; }
-        nav a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: color 0.3s; font-size: 0.9rem; }
+        nav ul { display: flex; list-style: none; gap: 15px; align-items: center; }
+        nav a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: all 0.3s ease; font-size: 0.9rem; }
         nav a:hover { color: var(--primary-color); }
+        
+        /* ปุ่มเข้าสู่ระบบบน Navbar */
+        .nav-admin-btn {
+            background-color: var(--primary-color);
+            color: var(--white) !important;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+        }
+        .nav-admin-btn:hover {
+            background-color: #246b43;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
 
         /* --- Hero Section --- */
         .hero {
@@ -262,6 +267,7 @@
                     <li><a href="#news">ข่าวสาร</a></li>
                     <li><a href="#staff">บุคลากร</a></li>
                     <li><a href="#contact">ติดต่อเรา</a></li>
+                    <li><a href="admin.html" class="nav-admin-btn"><i class="fas fa-lock"></i> เข้าสู่ระบบเจ้าหน้าที่</a></li>
                 </ul>
             </nav>
         </div>
@@ -275,9 +281,6 @@
                 <div class="hero-buttons">
                     <a href="#contact" class="btn btn-hero-contact">
                         <i class="fas fa-phone-alt"></i> ติดต่อเรา
-                    </a>
-                    <a href="admin.html" class="btn btn-hero-admin">
-                        <i class="fas fa-lock"></i> เข้าสู่ระบบเจ้าหน้าที่
                     </a>
                 </div>
             </div>
