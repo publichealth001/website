@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบจัดการแจ้งเตือน - รพ.สต. คลองน้อย</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Prompt', sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; padding: 50px 20px; margin: 0; }
         .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
@@ -18,6 +19,18 @@
         #dashboard { display: none; }
         .alert-item { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-bottom: 10px; border-radius: 4px; overflow: hidden; }
         .alert-text { margin-bottom: 10px; display: block; }
+        
+        /* สไตล์สำหรับปุ่มกลับหน้าหลัก */
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: #2E8B57; }
     </style>
 </head>
 <body>
@@ -29,6 +42,8 @@
             <input type="password" id="password" placeholder="รหัสผ่าน">
             <button id="login-btn">เข้าสู่ระบบ</button>
             <p id="login-error" style="color: red; text-align: center; font-size: 0.9rem; display: none;">อีเมลหรือรหัสผ่านไม่ถูกต้อง</p>
+            
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> กลับไปยังหน้าหลัก</a>
         </div>
 
         <div id="dashboard">
@@ -45,6 +60,8 @@
                 </div>
 
             <button id="logout-btn" class="btn-logout" style="margin-top: 30px;">ออกจากระบบ</button>
+            
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> กลับไปยังหน้าหลัก</a>
         </div>
     </div>
 
